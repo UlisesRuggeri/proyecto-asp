@@ -1,0 +1,29 @@
+﻿@model EsteroidesToDo.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Registrarse</h2>
+
+<form asp-action="Register" method="post">
+    
+    <div>
+        <label for="Nombre" >Nombre de usuario:</label>
+        <input asp-for="Nombre" type="name"/>
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+    
+    <div>
+        <label for="Email">Correo de su cuenta: </label>
+        <input asp-for="Email" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="ContraseniaHash">Contrasenia: </label>
+        <input asp-for="ContraseniaHash" type="password" required name="ContraseniaHash" />
+        <span asp-validation-for="ContraseniaHash" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+
+</form>
