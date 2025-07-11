@@ -1,6 +1,7 @@
 ﻿using EsteroidesToDo.Data;
 using EsteroidesToDo.Services;
 using EsteroidesToDo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,16 +21,22 @@ namespace EsteroidesToDo.Controllers
             
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(); // Devuelve la vista Login.cshtml
         }
 
+        [AllowAnonymous]
+        [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            return View(); // Devuelve la vista Login.cshtml
         }
 
+
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -43,11 +50,19 @@ namespace EsteroidesToDo.Controllers
             }
 
             var tokenGenerado = _loginService.GenerarToken(usuario);
+            Response.Cookies.Append("jwtToken", tokenGenerado, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, 
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
             return RedirectToAction("Index", "Home");
 
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -60,8 +75,9 @@ namespace EsteroidesToDo.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-       
 
+
+        [Authorize]
         [HttpGet]
         public IActionResult Logout()
         {

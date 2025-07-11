@@ -233,3 +233,4 @@ D:\EsteroidesToDo\EsteroidesToDo\bin\Debug\net9.0\Microsoft.Extensions.Identity.
 D:\EsteroidesToDo\EsteroidesToDo\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
 D:\EsteroidesToDo\EsteroidesToDo\bin\Debug\net9.0\libman.json
 D:\EsteroidesToDo\EsteroidesToDo\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\EsteroidesToDo\EsteroidesToDo\obj\Debug\net9.0\EsteroidesToDo.sourcelink.json

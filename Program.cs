@@ -1,5 +1,6 @@
 using EsteroidesToDo.Data;
 using EsteroidesToDo.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -21,6 +22,18 @@ IssuerSigningKey	        Clave secreta para firmar y validar el token (secreta d
 
 /*esto es el middleware de jwt*/
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", Options => {
+    Options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Request.Cookies["jwtToken"];
+            if (!string.IsNullOrEmpty(token))
+            {
+                context.Token = token;
+            }
+            return Task.CompletedTask;
+        }
+    };
 
     Options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -36,11 +49,6 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", Options => {
 
 });
 
-var app = builder.Build();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddDbContext<EsteroidesToDoDbContext>(options =>
@@ -51,6 +59,12 @@ builder.Services.AddScoped<RegisterService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+
 
 
 
