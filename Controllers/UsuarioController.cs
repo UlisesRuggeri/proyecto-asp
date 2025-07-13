@@ -1,9 +1,11 @@
 ﻿using EsteroidesToDo.Data;
 using EsteroidesToDo.Services;
 using EsteroidesToDo.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EsteroidesToDo.Controllers
 {
@@ -49,14 +51,22 @@ namespace EsteroidesToDo.Controllers
                 return View(model);
             }
 
-            var tokenGenerado = _loginService.GenerarToken(usuario);
-            Response.Cookies.Append("jwtToken", tokenGenerado, new CookieOptions
+            var claims = new List<Claim>
             {
-                HttpOnly = true,
-                Secure = true, 
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddHours(1)
+                        new Claim(ClaimTypes.Name, usuario.Nombre),
+                        new Claim(ClaimTypes.Email, usuario.Email)
+            };
+
+        
+            var claimsIdentity = new ClaimsIdentity(claims, "CookieAuth");
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            await HttpContext.SignInAsync("CookieAuth", claimsPrincipal, new AuthenticationProperties
+            {
+                IsPersistent = true, 
+                ExpiresUtc = DateTime.UtcNow.AddHours(1)
             });
+
             return RedirectToAction("Index", "Home");
 
 
@@ -79,10 +89,11 @@ namespace EsteroidesToDo.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync("CookieAuth");
             return RedirectToAction("Login");
         }
+
     }
 }

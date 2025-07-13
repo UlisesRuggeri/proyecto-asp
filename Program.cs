@@ -1,53 +1,18 @@
 using EsteroidesToDo.Data;
 using EsteroidesToDo.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-/*
-
-ValidateIssuer	            Verifica que el token fue emitido por un emisor de confianza.
-ValidateAudience	        Verifica que el token es para el público correcto (tu aplicación).
-ValidateLifetime	        Verifica que el token no esté expirado.
-ValidateIssuerSigningKey	Verifica que la firma del token es válida.
-ValidIssuer	                Nombre del emisor esperado del token.
-ValidAudience	            Nombre del público esperado del token.
-IssuerSigningKey	        Clave secreta para firmar y validar el token (secreta del servidor).
-*/
-
-
-/*esto es el middleware de jwt*/
-builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", Options => {
-    Options.Events = new JwtBearerEvents
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
     {
-        OnMessageReceived = context =>
-        {
-            var token = context.Request.Cookies["jwtToken"];
-            if (!string.IsNullOrEmpty(token))
-            {
-                context.Token = token;
-            }
-            return Task.CompletedTask;
-        }
-    };
-
-    Options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-
-    };
-
-});
+        options.LoginPath = "/Usuario/Login";
+        options.LogoutPath = "/Usuario/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1);
+        options.SlidingExpiration = true;
+    });
 
 builder.Services.AddAuthorization();
 
@@ -60,12 +25,6 @@ builder.Services.AddScoped<RegisterService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
 var app = builder.Build();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-
-
 
 
 app.UseSession();
@@ -89,6 +48,12 @@ app.UseHttpsRedirection();
 app.MapStaticAssets();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+
+
 
 
 
