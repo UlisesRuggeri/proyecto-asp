@@ -1,0 +1,26 @@
+﻿@using EsteroidesToDo.Application.ViewModels.VacanteViewModel
+@model CrearVacanteViewModel
+
+@{
+    ViewData["Title"] = "Crear Vacante";
+}
+
+<h2>Crear Vacamte</h2>
+
+<form asp-action="CrearVacante" method="post">
+
+    <div>
+        <label for="titulo">Titulo de la vacante: </label>
+        <input asp-for="Titulo" type="name" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="descripcion">Descripcion de la Vacamte: </label>
+        <input asp-for="Descripcion" type="text" />
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear Vacante</button>
+
+</form>

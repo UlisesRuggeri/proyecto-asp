@@ -1,0 +1,57 @@
+﻿@model List<EsteroidesToDo.Models.UsuarioVacante>
+@{
+    ViewBag.Title = "Postulantes";
+    var vacanteId = ViewBag.VacanteId;
+    var titulo = ViewBag.VacanteTitulo;
+}
+
+<h2>Postulantes a: @titulo</h2>
+
+@if (!Model.Any())
+{
+    <p>No hay postulaciones aún.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Estado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.Usuario.Nombre</td>
+                    <td>@p.Usuario.Email</td>
+                    <td>@p.Estado</td>
+                    <td>
+                        @if (p.Estado == "Pendiente")
+                        {
+                            <form asp-action="ActualizarPostulacion" method="post" class="d-inline">
+                                <input type="hidden" name="usuarioId" value="@p.UsuarioId" />
+                                <input type="hidden" name="vacanteId" value="@vacanteId" />
+                                <input type="hidden" name="nuevoEstado" value="Aceptado" />
+                                <button type="submit" class="btn btn-success btn-sm">Aceptar</button>
+                            </form>
+                            <form asp-action="ActualizarPostulacion" method="post" class="d-inline">
+                                <input type="hidden" name="usuarioId" value="@p.UsuarioId" />
+                                <input type="hidden" name="vacanteId" value="@vacanteId" />
+                                <input type="hidden" name="nuevoEstado" value="Ignorado" />
+                                <button type="submit" class="btn btn-danger btn-sm">Ignorar</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Ya @p.Estado</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

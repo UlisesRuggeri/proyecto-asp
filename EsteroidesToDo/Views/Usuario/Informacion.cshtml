@@ -1,0 +1,14 @@
+﻿@model UsuarioInfoViewModel
+
+<h2>Hola, @Model.Nombre</h2>
+<p>Email: @Model.Email</p>
+<p>Fecha de creación: @Model.FechaCreacion</p>
+
+@if (Model.PerteneceAEmpresa)
+{
+    <p>Pertenece a la empresa: @Model.NombreEmpresa</p>
+}
+else
+{
+    <p>No pertenece a ninguna empresa.</p>
+}

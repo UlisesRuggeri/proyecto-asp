@@ -1,0 +1,26 @@
+﻿@using EsteroidesToDo.Application.ViewModels.EmpresaViewModels
+@model EmpresaViewModel
+
+@{
+    ViewData["Title"] = "CrearEmpresa";
+}
+
+<h2>Crear Empresa</h2>
+
+<form asp-action="CrearEmpresa" method="post">
+
+    <div>
+        <label for="Nombre">Nombre de la empresa:</label>
+        <input asp-for="Nombre" type="name" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label for="Descripcion">Descripcion de la empresa: </label>
+        <input asp-for="Descripcion" type="text" />
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>  
+    
+    <button type="submit" class="btn btn-primary">Crear Empresa</button>
+
+</form>

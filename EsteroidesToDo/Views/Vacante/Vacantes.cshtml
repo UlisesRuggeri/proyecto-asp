@@ -1,0 +1,30 @@
+﻿@model List<Vacante>
+
+@{
+    ViewData["Title"] = "Vacantes";
+}
+
+<h2>Vacantes</h2>
+
+@if (ViewBag.EsDuenio == true)
+{
+    <a asp-action="Create" class="btn btn-success mb-3">Crear nueva vacante</a>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vacante in Model)
+        {
+            <tr>
+                <td>@vacante.Titulo</td>
+                <td>@vacante.Descripcion</td>
+            </tr>
+        }
+    </tbody>
+</table>

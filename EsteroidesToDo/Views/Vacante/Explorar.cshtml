@@ -1,0 +1,43 @@
+﻿@model List<EsteroidesToDo.Models.Vacante>
+@{
+    var postulaciones = ViewBag.Postulaciones as List<EsteroidesToDo.Models.UsuarioVacante>;
+}
+
+<h2>Vacantes disponibles</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Puesto</th>
+            <th>Descripción</th>
+            <th>Empresa</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vacante in Model)
+        {
+            var postulacion = postulaciones?.FirstOrDefault(p => p.VacanteId == vacante.Id);
+            <tr>
+                <td>@vacante.Titulo</td>
+                <td>@vacante.Descripcion</td>
+                <td>@vacante.Empresa.Nombre</td>
+                <td>@(postulacion?.Estado ?? "Sin postulación")</td>
+                <td>
+                    @if (postulacion == null)
+                    {
+                        <form asp-action="Postularse" method="post">
+                            <input type="hidden" name="vacanteId" value="@vacante.Id" />
+                            <button type="submit" class="btn btn-primary btn-sm">Postularse</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Ya postulado</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

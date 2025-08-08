@@ -1,0 +1,38 @@
+﻿@model List<EsteroidesToDo.Models.Vacante>
+
+<h2>Mis Vacantes Publicadas</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Postulantes</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vacante in Model)
+        {
+            <tr>
+                <td>@vacante.Titulo</td>
+                <td>@vacante.Descripcion</td>
+                <td>@vacante.Estado</td>
+                <td>@(vacante.Postulaciones?.Count ?? 0)</td>
+                <td>
+                    <form asp-action="CambiarEstadoVacante" method="post">
+                        <input type="hidden" name="vacanteId" value="@vacante.Id" />
+                        <select name="nuevoEstado" class="form-select form-select-sm d-inline w-auto me-2">
+                            <option selected disabled>Cambiar estado</option>
+                            <option value="Activa">Activa</option>
+                            <option value="Cerrada">Cerrada</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-warning">Guardar</button>
+                    </form>
+                    <a asp-controller="Vacante" asp-action="Postulantes" asp-route-id="@vacante.Id" class="btn btn-sm btn-info mt-1">Ver postulantes</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
