@@ -8,6 +8,7 @@ D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.App
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.Application.AssemblyInfoInputs.cache
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.Application.AssemblyInfo.cs
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.Application.csproj.CoreCompileInputs.cache
+D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.Application.sourcelink.json
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\Esteroid.C4F6857D.Up2Date
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\EsteroidesToDo.Application.dll
 D:\EsteroidesToDo\EsteroidesToDo.Application\obj\Debug\net8.0\refint\EsteroidesToDo.Application.dll

@@ -60,28 +60,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/CrearVacante.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVxDcmVhclZhY2FudGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVxDcmVhdGUuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/Explorar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVxFeHBsb3Jhci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/MisVacantes.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVxNaXNWYWNhbnRlcy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/Postulantes.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmFjYW50ZVxQb3N0dWxhbnRlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/EsteroidesToDo/EsteroidesToDo/Views/Vacante/Vacantes.cshtml]

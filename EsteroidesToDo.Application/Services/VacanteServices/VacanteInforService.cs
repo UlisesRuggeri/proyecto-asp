@@ -1,7 +1,6 @@
 ﻿using EsteroidesToDo.Application.DTOs.VacanteDtos;
 using EsteroidesToDo.Application.Interfaces;
-using EsteroidesToDo.Application.Services.VacanteServices;
-using EsteroidesToDo.Application.ViewModels.VacanteViewModel;
+using EsteroidesToDo.Application.ViewModels.VacanteVistaViewModel;
 using EsteroidesToDo.Domain.Interfaces;
 
 public class VacanteInfoService : IVacanteInfoService

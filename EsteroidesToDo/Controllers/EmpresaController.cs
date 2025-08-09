@@ -26,7 +26,6 @@ namespace EsteroidesToDo.Controllers
                 return BadRequest(ModelState);
 
 
-            var idString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //por si falla el claim:
             //out int idDuenio es una salida por referencia para sacar una variable desde un metodo(TryParse)
             if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int idDuenio))

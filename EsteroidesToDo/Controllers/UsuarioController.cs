@@ -88,6 +88,8 @@ namespace EsteroidesToDo.Controllers
             if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
                 return BadRequest("Redirección no permitida.");
 
+            return Redirect(returnUrl);
+
         }
 
         [HttpGet]

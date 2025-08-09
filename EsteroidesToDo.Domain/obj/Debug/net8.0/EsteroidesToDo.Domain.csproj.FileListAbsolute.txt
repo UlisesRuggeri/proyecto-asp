@@ -5,6 +5,7 @@ D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.G
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.AssemblyInfoInputs.cache
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.AssemblyInfo.cs
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.csproj.CoreCompileInputs.cache
+D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.sourcelink.json
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.dll
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\refint\EsteroidesToDo.Domain.dll
 D:\EsteroidesToDo\EsteroidesToDo.Domain\obj\Debug\net8.0\EsteroidesToDo.Domain.pdb

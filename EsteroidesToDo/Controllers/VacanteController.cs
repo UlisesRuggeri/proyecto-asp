@@ -1,6 +1,6 @@
 ﻿using EsteroidesToDo.Application.DTOs.VacanteDtos;
 using EsteroidesToDo.Application.Services.VacanteServices;
-using EsteroidesToDo.Application.ViewModels.VacanteViewModel;
+using EsteroidesToDo.Application.ViewModels.CrearVacanteViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
