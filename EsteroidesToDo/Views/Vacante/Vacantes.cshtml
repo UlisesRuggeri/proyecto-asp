@@ -1,4 +1,4 @@
-﻿@model EsteroidesToDo.Application.ViewModels.VacanteVistaViewModel
+﻿@model EsteroidesToDo.Application.ViewModels.VacantesVistaViewModel
 
 @{
     ViewData["Title"] = "Vacantes";
@@ -6,7 +6,7 @@
 
 <h2>Vacantes</h2>
 
-@if (ViewBag.EsDuenio == true)
+@if (Model.EsDuenio)
 {
     <a asp-action="Create" class="btn btn-success mb-3">Crear nueva vacante</a>
 }
@@ -14,17 +14,20 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Título</th>
-            <th>Descripción</th>
+            <th>Título: </th>
+            <th>EmpresaNombre</th>
+            <th>Descripción: </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var vacante in Model)
+        @foreach (var vacante in Model.Vacantes)
         {
             <tr>
                 <td>@vacante.Titulo</td>
+                <td>@vacante.EmpresaNombre</td>
                 <td>@vacante.Descripcion</td>
-
+                <td>@vacante.Estado</td>
+                <td>@vacante.FechaCreacion</td>
             </tr>
         }
     </tbody>

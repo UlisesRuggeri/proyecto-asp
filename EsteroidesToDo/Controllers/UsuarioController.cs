@@ -22,7 +22,7 @@ namespace EsteroidesToDo.Controllers
             _registerService = registerService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -68,12 +68,21 @@ namespace EsteroidesToDo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
         {
+
+            var errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            foreach (var error in errores)
+            {
+                Console.WriteLine(error); // O pasalo a la vista para mostrar
+            }
+
+
             ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
 
 
             var usuario = new RegisterDto
@@ -92,7 +101,7 @@ namespace EsteroidesToDo.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public async Task<IActionResult> Perfil()
         {

@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace EsteroidesToDo.Application.ViewModels.CrearVacanteViewModel { 
+namespace EsteroidesToDo.Application.ViewModels;
 public class CrearVacanteViewModel
 {
         [Required, NotNull]
@@ -14,4 +14,3 @@ public class CrearVacanteViewModel
         public string Descripcion { get; set; }
 
     }
-}

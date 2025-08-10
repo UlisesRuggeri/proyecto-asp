@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace EsteroidesToDo.Application.ViewModels.VacanteInfoViewModel { 
+namespace EsteroidesToDo.Application.ViewModels; 
 
 public class VacanteInfoViewModel
 {
@@ -22,4 +22,3 @@ public class VacanteInfoViewModel
         public DateTime FechaCreacion { get; set; }
 
     }
-}
