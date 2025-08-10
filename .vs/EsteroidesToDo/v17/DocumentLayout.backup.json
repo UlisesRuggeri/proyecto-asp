@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "EsteroidesToDo\\Controllers\\UsuarioController.cs",
               "ToolTip": "D:\\EsteroidesToDo\\EsteroidesToDo\\Controllers\\UsuarioController.cs",
               "RelativeToolTip": "EsteroidesToDo\\Controllers\\UsuarioController.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAwwE8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-10T11:51:33.525Z",
               "EditorCaption": ""
@@ -55,8 +55,7 @@
               "RelativeToolTip": "EsteroidesToDo\\Views\\Vacante\\CrearVacante.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-10T11:45:19.378Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-10T11:45:19.378Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "EsteroidesToDo\\Controllers\\VacanteController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-10T11:45:07.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-10T11:45:07.533Z"
             },
             {
               "$type": "Document",
@@ -93,8 +91,7 @@
               "RelativeToolTip": "EsteroidesToDo\\Views\\Vacante\\Vacantes.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-09T11:30:47.227Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-09T11:30:47.227Z"
             }
           ]
         }

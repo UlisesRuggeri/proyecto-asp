@@ -22,17 +22,30 @@ namespace EsteroidesToDo.Controllers
             _registerService = registerService;
         }
 
-        [HttpPost]
+        [HttpGet]
+        public IActionResult Informacion(string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        [HttpGet]
+        public IActionResult Register(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            return View(); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -57,57 +70,42 @@ namespace EsteroidesToDo.Controllers
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-
-            //evita que me hackeen redireccionando usuario a paginas truchas, solamente un segundo checkeo
-            if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
-                return BadRequest("Redirección no permitida.");
-
+            await HttpContext.SignInAsync("CookieAuth", principal);
 
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-
-            var errores = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-            foreach (var error in errores)
+            if (!ModelState.IsValid)
             {
-                Console.WriteLine(error); // O pasalo a la vista para mostrar
+                var errores = string.Join(" | ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+
+                Console.WriteLine(errores);
+                return BadRequest(ModelState);
             }
 
-
-            ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-
-
-            var usuario = new RegisterDto
+            await _registerService.RegistrarUsuario(new RegisterDto
             {
                 Nombre = model.Nombre,
                 Email = model.Email,
                 Password = model.Password
-            };
+            });
 
-            await _registerService.RegistrarUsuario(usuario);
-
-            if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
-                return BadRequest("Redirección no permitida.");
-
-            return Redirect(returnUrl);
-
+            return RedirectToAction("Login");
         }
+
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Perfil()
+        public async Task<IActionResult> Informacion()
         {
             var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var viewModel = await _usuarioInfoService.ObtenerUsuarioInfo(email);
-            return View(viewModel);
+            return View( viewModel);
         }
 
 
