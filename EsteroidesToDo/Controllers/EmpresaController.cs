@@ -16,10 +16,16 @@ namespace EsteroidesToDo.Controllers
             _crearEmpresaService = crearEmpresaService;
         }
 
-
-
-        [HttpPost]
         [Authorize]
+        [HttpGet]
+        public IActionResult CrearEmpresa()
+        {
+            return View();
+        }
+
+        
+        [Authorize]
+        [HttpPost]
         public async Task<IActionResult> CrearEmpresa(EmpresaViewModel model)
         {
             if (!ModelState.IsValid)

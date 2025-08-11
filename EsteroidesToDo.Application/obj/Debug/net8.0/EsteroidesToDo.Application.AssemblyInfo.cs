@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EsteroidesToDo.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d3580194c0c868138c135f66f5ece1389a298753")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f036bc02d8a75b9f4859f1ac3a8385eb088046b3")]
 [assembly: System.Reflection.AssemblyProductAttribute("EsteroidesToDo.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EsteroidesToDo.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

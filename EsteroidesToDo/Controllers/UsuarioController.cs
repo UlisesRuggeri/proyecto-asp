@@ -22,11 +22,13 @@ namespace EsteroidesToDo.Controllers
             _registerService = registerService;
         }
 
+        [Authorize]
         [HttpGet]
-        public IActionResult Informacion(string? returnUrl = null)
+        public async Task<IActionResult> Informacion(string? returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var viewModel = await _usuarioInfoService.ObtenerUsuarioInfo(email);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -97,17 +99,6 @@ namespace EsteroidesToDo.Controllers
 
             return RedirectToAction("Login");
         }
-
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Informacion()
-        {
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var viewModel = await _usuarioInfoService.ObtenerUsuarioInfo(email);
-            return View( viewModel);
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> Logout()

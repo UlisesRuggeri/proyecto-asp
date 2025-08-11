@@ -15,11 +15,9 @@ namespace EseroidesToDo.Infrastructure.Repositories
         }
         public async Task<bool> UsuarioPuedeCrearVacante(int usuarioId)
         {
-            var usuario = await _context.Usuarios
+            return await _context.Empresas
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == usuarioId);
-
-            return usuario?.EmpresaId != null;
+                .AnyAsync(e => e.IdDuenio == usuarioId);
         }
 
         public async Task CrearVacante(Vacante vacante)
@@ -32,6 +30,14 @@ namespace EseroidesToDo.Infrastructure.Repositories
         {
             return await _context.Vacantes
                 .Include(v => v.Empresa)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<List<Vacante>> ObtenerTodasLasVacantesDeUnaEmpresa(int usuarioId)
+        {
+            return await _context.Vacantes
+                .Where(v => v.UsuarioId == usuarioId)
                 .AsNoTracking()
                 .ToListAsync();
         }

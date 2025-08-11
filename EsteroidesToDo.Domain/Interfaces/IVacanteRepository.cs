@@ -8,6 +8,8 @@ namespace EsteroidesToDo.Domain.Interfaces
         Task<bool> UsuarioPuedeCrearVacante(int usuarioId);
         Task CrearVacante(Vacante vacante);
 
-        Task<List<Vacante>> ObtenerTodasLasVacantes(); 
+        Task<List<Vacante>> ObtenerTodasLasVacantes();
+
+        Task<List<Vacante>> ObtenerTodasLasVacantesDeUnaEmpresa(int usuarioId);
     }
 }
