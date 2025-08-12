@@ -11,5 +11,11 @@ namespace EsteroidesToDo.Domain.Interfaces
         Task<List<Vacante>> ObtenerTodasLasVacantes();
 
         Task<List<Vacante>> ObtenerTodasLasVacantesDeUnaEmpresa(int usuarioId);
+
+        Task CambiarEstadoVacante(int vacanteId, string nuevoEstado);
+
+        Task AceptarPostulado(int vacanteId, int usuarioId);
+
+        Task RechazarPostulado(int usuarioId, int vacanteId);
     }
 }

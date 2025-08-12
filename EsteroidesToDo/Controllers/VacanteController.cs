@@ -5,53 +5,58 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-
 namespace EsteroidesToDo.Controllers
 {
+    /// <summary>
+    /// Controller for managing job vacancies and applicants.
+    /// </summary>
+    [Authorize]
     public class VacanteController : Controller
     {
         private readonly CrearVacanteService _crearVacanteService;
         private readonly VacanteInfoService _vacanteInfoService;
         private readonly PostulacionesVacantesService _postulacionesVacantesService;
 
-
-        public VacanteController(VacanteInfoService vacanteInfo, CrearVacanteService crearVacanteService, PostulacionesVacantesService postulacionesVacantesService)
+        public VacanteController(
+            VacanteInfoService vacanteInfo,
+            CrearVacanteService crearVacanteService,
+            PostulacionesVacantesService postulacionesVacantesService)
         {
-            _postulacionesVacantesService = postulacionesVacantesService;
-            _crearVacanteService = crearVacanteService;
             _vacanteInfoService = vacanteInfo;
+            _crearVacanteService = crearVacanteService;
+            _postulacionesVacantesService = postulacionesVacantesService;
         }
 
-        [Authorize]
-        [HttpGet]
-        public IActionResult CrearVacante()
+        // ---------------------------
+        // Helper Method
+        // ---------------------------
+        private int? GetUserId()
         {
-            return View();
+            return int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int id) ? id : (int?)null;
         }
 
-        [Authorize]
+        // ---------------------------
+        // Vacancy Views
+        // ---------------------------
+        [HttpGet]
+        public IActionResult CrearVacante() => View();
+
         public async Task<IActionResult> Vacantes()
         {
-            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
-            {
-                return Unauthorized();
-            }
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
 
-            var viewModel = await _vacanteInfoService.ObtenerVistaVacantes(userId);
-
-            return View("Vacantes", viewModel);
+            var viewModel = await _vacanteInfoService.ObtenerVistaVacantes(userId.Value);
+            return View(viewModel);
         }
 
-
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CrearVacante(CrearVacanteViewModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
-                return Unauthorized();
+            var userId = GetUserId();
+            if (userId == null) return Unauthorized();
 
             try
             {
@@ -59,57 +64,51 @@ namespace EsteroidesToDo.Controllers
                 {
                     Titulo = model.Titulo,
                     Descripcion = model.Descripcion,
-                    UsuarioId = userId
+                    UsuarioId = userId.Value
                 };
 
                 await _crearVacanteService.CrearVacante(dto);
-                return RedirectToAction("Vacantes");
+                return RedirectToAction(nameof(Vacantes));
             }
             catch (InvalidOperationException ex)
             {
                 TempData["Error"] = ex.Message;
-                return RedirectToAction("Vacantes");
+                return RedirectToAction(nameof(Vacantes));
             }
         }
 
-        /**********************************************************************************/
-
-
-        // 1. GET para mostrar la lista de postulados de una vacante
-        [Authorize]
+        // ---------------------------
+        // Applicants Management
+        // ---------------------------
         [HttpGet]
         public async Task<IActionResult> ListaPostulados()
         {
-            var EmpresaId = User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value;
-            if (EmpresaId == null)
-            {
-                return BadRequest();
-            }
-            var postulados = await _postulacionesVacantesService.ObtenerTodasLasVacantesDeUnaEmpresa(int.Parse(EmpresaId));
+            var empresaId = GetUserId();
+            if (empresaId == null) return BadRequest();
+
+            var postulados = await _postulacionesVacantesService
+                .ObtenerTodasLasVacantesDeUnaEmpresa(empresaId.Value);
+
             return View("MisVacantes", postulados);
         }
 
-        // 2.  para aceptar un postulado, se lo agrega a la empresa y recibe una notificacion, (se elimina de la tabla UsuarioVacantes)
-        [Authorize]
-        public async Task<IActionResult> AceptarPostulado(int usuarioId, int vacanteId)
+        public async Task<IActionResult> AceptarPostulado(int vacanteId, int usuarioId)
         {
-            return RedirectToAction("ListaPostulados", new { vacanteId });
+            await _postulacionesVacantesService.AceptarPostulado(vacanteId, usuarioId);
+            return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 
-        // 3. para ignorar/rechazar un postulado(se elimina de la tabla UsuarioVacantes)
-        [Authorize]
         public async Task<IActionResult> RechazarPostulado(int usuarioId, int vacanteId)
         {
-            return RedirectToAction("ListaPostulados", new { vacanteId });
+            await _postulacionesVacantesService.RechazarPostulado(usuarioId, vacanteId);
+            return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 
-        // 4. cambia el estado de la vacante/elimina la vacante
-        [Authorize]
-        public async Task<IActionResult> cambiarEstadoVacante(int usuarioId, int vacanteId)
+        [HttpPost]
+        public async Task<IActionResult> CambiarEstadoVacante(int vacanteId, string nuevoEstado)
         {
-            
-            return RedirectToAction("ListaPostulados", new { vacanteId });
+            await _postulacionesVacantesService.CambiarEstadoVacante(vacanteId, nuevoEstado);
+            return RedirectToAction(nameof(Vacantes));
         }
-
     }
 }
