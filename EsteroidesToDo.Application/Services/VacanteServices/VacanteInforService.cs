@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs.VacanteDtos;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs.VacanteDtos;
 using EsteroidesToDo.Application.Interfaces;
 using EsteroidesToDo.Application.ViewModels;
 using EsteroidesToDo.Domain.Interfaces;
@@ -12,11 +13,11 @@ public class VacanteInfoService : IVacanteInfoService
         _repo = repo;
     }
 
-    public async Task<List<VacanteInfoDto>> ObtenerTodasLasVacantes()
+    public async Task<OperationResult<List<VacanteInfoDto>>> ObtenerTodasLasVacantes()
     {
-        var vacantes = await _repo.ObtenerTodasLasVacantes();
+        var vacantes = await _repo.ObtenerTodasAsync();
 
-        return vacantes.Select(v => new VacanteInfoDto
+        var result = vacantes.Select(v => new VacanteInfoDto
         {
             Titulo = v.Titulo,
             Descripcion = v.Descripcion,
@@ -25,17 +26,22 @@ public class VacanteInfoService : IVacanteInfoService
             FechaCreacion = v.FechaCreacion
 
         }).ToList();
+
+        return OperationResult<List<VacanteInfoDto>>.Success(result);
     }
 
-    public async Task<VacantesVistaViewModel> ObtenerVistaVacantes(int userId)
+    public async Task<OperationResult<VacantesVistaViewModel>> ObtenerVistaVacantes(int userId)
     {
-        var esDuenio = await _repo.UsuarioPuedeCrearVacante(userId);
-        var vacantes = await ObtenerTodasLasVacantes(); 
-        return new VacantesVistaViewModel
+        var esDuenio = await _repo.PuedeCrearVacanteAsync(userId);
+        var vacantesResult = await ObtenerTodasLasVacantes(); 
+        var VacantesVistaVM = new VacantesVistaViewModel
         {
             EsDuenio = esDuenio,
-            Vacantes = vacantes
+            Vacantes = vacantesResult.Value
         };
+
+        return OperationResult<VacantesVistaViewModel>.Success(VacantesVistaVM);
     }
+
 
 }

@@ -1,4 +1,4 @@
-﻿@model List<EsteroidesToDo.Application.ViewModels>
+﻿@model List<EsteroidesToDo.Application.ViewModels.VacanteViewModel>
 
 <h1>Vacantes de mi empresa</h1>
 
@@ -17,40 +17,49 @@
             <tr>
                 <td>@vacante.Titulo</td>
                 <td>
-                    <form asp-action="CambiarEstado" method="post" style="display:inline;">
-                        <input type="hidden" name="vacanteId" value="@vacante.Id" />
-                        <select name="nuevoEstado" onchange="this.form.submit()">
-                            <option value="Activa" selected="@(vacante.Estado == "Activa" ? "selected" : "")">Activa</option>
-                            <option value="Cerrada" selected="@(vacante.Estado == "Cerrada" ? "selected" : "")">Cerrada</option>
-                        </select>
-                    </form>
+                    <select name="nuevoEstado" onchange="this.form.submit()">
+                        <option value="Activa" selected="@("Activa" == vacante.Estado)">Activa</option>
+                        <option value="Cerrada" selected="@("Cerrada" == vacante.Estado)">Cerrada</option>
+                    </select>
+
                 </td>
                 <td>
-                    <button type="button" onclick="togglePostulados(@vacante.Id)">Ver postulados (@vacante.Postulados.Count)</button>
-                    <div id="postulados-@vacante.Id" style="display:none; margin-top: 10px;">
+                    <button type="button" onclick="togglePostulados(@vacante.VacanteId)">
+                        Ver postulados (@(vacante.Postulados?.Count ?? 0))
+                    </button>
+                    <div id="postulados-@vacante.VacanteId" style="display:none; margin-top: 10px;">
                         <ul>
-                            @foreach (var postulado in vacante.Postulados)
+                            @if (vacante.Postulados != null && vacante.Postulados.Any())
                             {
-                                <li>
-                                    @postulado.Nombre - Estado: @postulado.Estado
-                                    <form asp-action="AceptarPostulado" method="post" style="display:inline;">
-                                        <input type="hidden" name="vacanteId" value="@vacante.Id" />
-                                        <input type="hidden" name="postuladoId" value="@postulado.Id" />
-                                        <button type="submit">Aceptar</button>
-                                    </form>
-                                    <form asp-action="IgnorarPostulado" method="post" style="display:inline;">
-                                        <input type="hidden" name="vacanteId" value="@vacante.Id" />
-                                        <input type="hidden" name="postuladoId" value="@postulado.Id" />
-                                        <button type="submit">Ignorar</button>
-                                    </form>
-                                </li>
+                                @foreach (var postulado in vacante.Postulados)
+                                {
+                                    <li>
+                                        <strong>@postulado.UsuarioId</strong> - Estado: @postulado.Estado
+                                        <br />
+                                        <em>Propuesta:</em> @postulado.PropuestaTexto
+                                        <form asp-action="AceptarPostulado" method="post" style="display:inline;">
+                                            <input type="hidden" name="vacanteId" value="@vacante.VacanteId" />
+                                            <input type="hidden" name="usuarioId" value="@postulado.UsuarioId" />
+                                            <button type="submit">Aceptar</button>
+                                        </form>
+                                        <form asp-action="IgnorarPostulado" method="post" style="display:inline;">
+                                            <input type="hidden" name="vacanteId" value="@vacante.VacanteId" />
+                                            <input type="hidden" name="usuarioId" value="@postulado.UsuarioId" />
+                                            <button type="submit">Ignorar</button>
+                                        </form>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>No hay postulados.</li>
                             }
                         </ul>
                     </div>
                 </td>
                 <td>
                     <form asp-action="BorrarVacante" method="post" onsubmit="return confirm('¿Seguro querés borrar esta vacante?');">
-                        <input type="hidden" name="vacanteId" value="@vacante.Id" />
+                        <input type="hidden" name="vacanteId" value="@vacante.VacanteId" />
                         <button type="submit">Borrar</button>
                     </form>
                 </td>
@@ -63,11 +72,7 @@
     <script>
         function togglePostulados(id) {
             var div = document.getElementById('postulados-' + id);
-            if (div.style.display === 'none') {
-                div.style.display = 'block';
-            } else {
-                div.style.display = 'none';
-            }
+            div.style.display = div.style.display === 'none' ? 'block' : 'none';
         }
     </script>
 }

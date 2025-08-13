@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs.VacanteDtos;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs.VacanteDtos;
 using EsteroidesToDo.Domain.Interfaces;
 using EsteroidesToDo.Models;
 
@@ -16,18 +17,18 @@ namespace EsteroidesToDo.Application.Services.VacanteServices
 
         public async Task<bool> UsuarioPuedeCrearVacante(int usuarioId)
         {
-            return await _vacanteRepo.UsuarioPuedeCrearVacante(usuarioId);
+            return await _vacanteRepo.PuedeCrearVacanteAsync(usuarioId);
         }
 
-        public async Task CrearVacante(VacanteDto dto)
+        public async Task<OperationResult<bool>> CrearVacante(VacanteDto dto)
         {
 
-            var empresaId = await _usuarioRepo.UsuarioYaTieneEmpresa(dto.UsuarioId);
+            var empresaId = await _usuarioRepo.ObtenerEmpresaDelUsuarioAsync(dto.UsuarioId);
             if (empresaId == null)
-                throw new InvalidOperationException("No tenés empresa, no podés crear vacantes.");
+                return OperationResult<bool>.Failure("No tenés empresa, no podés crear vacantes.");
 
             if (!await UsuarioPuedeCrearVacante(dto.UsuarioId))
-                throw new InvalidOperationException("No estás autorizado para crear vacantes.");
+                return OperationResult<bool>.Failure("No estás autorizado para crear vacantes.");
 
 
 
@@ -35,12 +36,12 @@ namespace EsteroidesToDo.Application.Services.VacanteServices
             {
                 Titulo = dto.Titulo,
                 Descripcion = dto.Descripcion,
-                UsuarioId = dto.UsuarioId,
                 EmpresaId = (int)empresaId,
                 Estado = "Activa"
             };
 
-            await _vacanteRepo.CrearVacante(nuevaVacante);
+            await _vacanteRepo.AgregarVacanteAsync(nuevaVacante);
+            return OperationResult<bool>.Success(true);
         }
     }
 }

@@ -1,4 +1,5 @@
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.deps.json
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.runtimeconfig.json
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.dll
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.pdb
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Domain.dll
@@ -13,4 +14,5 @@ D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\Esteroid.BE63A4
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.dll
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\refint\EsteroidesToDo.Infrastructure.dll
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.pdb
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.genruntimeconfig.cache
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\ref\EsteroidesToDo.Infrastructure.dll

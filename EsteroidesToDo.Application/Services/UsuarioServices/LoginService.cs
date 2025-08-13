@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using EsteroidesToDo.Domain.Interfaces;
 
 namespace EsteroidesToDo.Application.Services.UserServices
@@ -13,21 +14,23 @@ namespace EsteroidesToDo.Application.Services.UserServices
             _repo = repo;
         }
 
-        public async Task<LoginDto> VerificarLogin(string email, string password)
+        public async Task<OperationResult<LoginDto>> VerificarLogin(string email, string password)
         {
             var usuario = await _repo.ObtenerPorEmailAsync(email);
 
             if (usuario == null || !BCrypt.Net.BCrypt.Verify(password, usuario.ContraseniaHash))
-                return null;
+                return OperationResult<LoginDto>.Failure("credenciales invalidas");
 
 
 
-            return new LoginDto
+            var dto = new LoginDto
             {
                 Id = usuario.Id,
                 Nombre = usuario.Nombre,
                 Email = usuario.Email
             };
+
+            return OperationResult<LoginDto>.Success(dto);
         }
 
 

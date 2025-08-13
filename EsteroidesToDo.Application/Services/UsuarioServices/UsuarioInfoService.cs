@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Domain.Interfaces;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Domain.Interfaces;
 
 namespace EsteroidesToDo.Application.Services.UserServices
 {
@@ -13,14 +14,14 @@ namespace EsteroidesToDo.Application.Services.UserServices
             _empresaRepository = empresaRepository;
         }
 
-        public async Task<UsuarioInfoViewModel?> ObtenerUsuarioInfo(string email)
+        public async Task<OperationResult<UsuarioInfoViewModel>> ObtenerUsuarioInfo(string email)
         {
             var usuario = await _usuarioRepository.ObtenerPorEmailAsync(email);
-            if (usuario == null) return null;
+            if (usuario == null) return OperationResult<UsuarioInfoViewModel>.Failure("Usuario no encontrado");
 
             var empresa = await _empresaRepository.ObtenerPorIdDuenioAsync(usuario.Id);
 
-            return new UsuarioInfoViewModel
+            var UsuarioInfoVM = new UsuarioInfoViewModel
             {
                 Nombre = usuario.Nombre,
                 Email = usuario.Email,
@@ -28,6 +29,8 @@ namespace EsteroidesToDo.Application.Services.UserServices
                 PerteneceAEmpresa = empresa != null,
                 NombreEmpresa = empresa?.Nombre
             };
+
+            return OperationResult<UsuarioInfoViewModel>.Success(UsuarioInfoVM);
         }
     }
 }

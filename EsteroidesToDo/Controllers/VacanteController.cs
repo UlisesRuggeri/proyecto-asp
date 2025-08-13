@@ -46,8 +46,13 @@ namespace EsteroidesToDo.Controllers
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
 
-            var viewModel = await _vacanteInfoService.ObtenerVistaVacantes(userId.Value);
-            return View(viewModel);
+            var result = await _vacanteInfoService.ObtenerVistaVacantes(userId.Value);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);    
+            }
+            
+            return View(result.Value);
         }
 
         [HttpPost]
@@ -58,23 +63,24 @@ namespace EsteroidesToDo.Controllers
             var userId = GetUserId();
             if (userId == null) return Unauthorized();
 
-            try
-            {
-                var dto = new VacanteDto
-                {
-                    Titulo = model.Titulo,
-                    Descripcion = model.Descripcion,
-                    UsuarioId = userId.Value
-                };
+          
+           var dto = new VacanteDto
+           {
+              Titulo = model.Titulo,
+              Descripcion = model.Descripcion,
+              UsuarioId = userId.Value
+           };
 
-                await _crearVacanteService.CrearVacante(dto);
-                return RedirectToAction(nameof(Vacantes));
-            }
-            catch (InvalidOperationException ex)
+            var result = await _crearVacanteService.CrearVacante(dto);
+
+            if (!result.IsSuccess)
             {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction(nameof(Vacantes));
+                return BadRequest(result.Error);
             }
+
+            return RedirectToAction(nameof(Vacantes));
+            
+         
         }
 
         // ---------------------------
@@ -86,28 +92,61 @@ namespace EsteroidesToDo.Controllers
             var empresaId = GetUserId();
             if (empresaId == null) return BadRequest();
 
-            var postulados = await _postulacionesVacantesService
+            var result = await _postulacionesVacantesService
                 .ObtenerTodasLasVacantesDeUnaEmpresa(empresaId.Value);
 
-            return View("MisVacantes", postulados);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+
+            var vacantesVM = result.Value.Select(v => new VacanteViewModel
+            {
+                VacanteId = v.Id,
+                Titulo = v.Titulo,
+                Estado = v.Estado,
+                Postulados = v.UsuarioVacantes
+                    .Select(uv => new PostuladoViewModel
+                    {
+                        UsuarioId = uv.UsuarioId,
+                        VacanteId = uv.VacanteId,
+                        PropuestaTexto = uv.PropuestaTexto,
+                        Estado = uv.Estado
+                    }).ToList()
+            }).ToList();
+
+            return View("MisVacantes", vacantesVM);
         }
+
 
         public async Task<IActionResult> AceptarPostulado(int vacanteId, int usuarioId)
         {
-            await _postulacionesVacantesService.AceptarPostulado(vacanteId, usuarioId);
+            var result = await _postulacionesVacantesService.AceptarPostulado(vacanteId, usuarioId);
+            if (result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
             return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 
-        public async Task<IActionResult> RechazarPostulado(int usuarioId, int vacanteId)
+        public async Task<IActionResult> RechazarPostulado(int vacanteId, int usuarioId)
         {
-            await _postulacionesVacantesService.RechazarPostulado(usuarioId, vacanteId);
+            var result = await _postulacionesVacantesService.RechazarPostulado(vacanteId, usuarioId);
+            if (result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
             return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 
         [HttpPost]
         public async Task<IActionResult> CambiarEstadoVacante(int vacanteId, string nuevoEstado)
         {
-            await _postulacionesVacantesService.CambiarEstadoVacante(vacanteId, nuevoEstado);
+            var result = await _postulacionesVacantesService.CambiarEstadoVacante(vacanteId, nuevoEstado);
+            if (result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
             return RedirectToAction(nameof(Vacantes));
         }
     }

@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs;
 using EsteroidesToDo.Domain.Interfaces;
 using EsteroidesToDo.Models;
 
@@ -15,20 +16,22 @@ namespace EsteroidesToDo.Application.Services.EmpresaServices
             _empresaRepo = EmpresaRepo;
         }
 
-        public async Task CrearYAsignarEmpresa(EmpresaDto dto)
+        public async Task<OperationResult<bool>> CrearYAsignarEmpresa(EmpresaDto dto)
         {
-            if (await _usuarioRepo.UsuarioYaTieneEmpresa(dto.idDuenio) != null)
-                throw new InvalidOperationException("El usuario ya tiene empresa.");
-
+            if (await _usuarioRepo.ObtenerEmpresaDelUsuarioAsync(dto.idDuenio) != null)
+                return OperationResult<bool>.Failure("Usuario ya tiene empresa");
+           
             var empresa = new Empresa
             {
                 Nombre = dto.Nombre,
                 Descripcion = dto.Descripcion,
                 IdDuenio = dto.idDuenio,
             };
-
+            
             await _empresaRepo.CrearEmpresa(empresa); 
             await _usuarioRepo.AgregarEmpresaId(dto.idDuenio, empresa.Id);
+
+            return OperationResult<bool>.Success(true);
         }
 
 

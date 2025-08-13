@@ -5,17 +5,19 @@ namespace EsteroidesToDo.Domain.Interfaces
 {
     public interface IVacanteRepository
     {
-        Task<bool> UsuarioPuedeCrearVacante(int usuarioId);
-        Task CrearVacante(Vacante vacante);
 
-        Task<List<Vacante>> ObtenerTodasLasVacantes();
+        Task<bool> PuedeCrearVacanteAsync(int usuarioId);
 
-        Task<List<Vacante>> ObtenerTodasLasVacantesDeUnaEmpresa(int usuarioId);
+        Task AgregarVacanteAsync(Vacante vacante);
 
-        Task CambiarEstadoVacante(int vacanteId, string nuevoEstado);
+        Task<List<Vacante>> ObtenerTodasAsync();
 
-        Task AceptarPostulado(int vacanteId, int usuarioId);
+        Task<List<Vacante>> ObtenerPorEmpresaAsync(int usuarioId);
 
-        Task RechazarPostulado(int usuarioId, int vacanteId);
+        Task ActualizarEstadoAsync(int vacanteId, string nuevoEstado);
+
+        Task MarcarPostuladoComoAceptadoAsync(int vacanteId, int usuarioId);
+
+        Task MarcarPostuladoComoRechazadoAsync(int vacanteId, int usuarioId);
     }
 }

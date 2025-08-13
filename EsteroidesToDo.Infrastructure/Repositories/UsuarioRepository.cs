@@ -37,7 +37,7 @@ namespace EsteroidesToDo.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int?> UsuarioYaTieneEmpresa(int usuarioId)
+        public async Task<int?> ObtenerEmpresaDelUsuarioAsync(int usuarioId)
         {
             var usuario = await _context.Usuarios
                 .AsNoTracking()

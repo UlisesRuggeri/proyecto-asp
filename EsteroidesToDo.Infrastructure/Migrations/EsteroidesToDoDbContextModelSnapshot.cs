@@ -260,14 +260,9 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmpresaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Vacantes");
                 });
@@ -470,15 +465,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Empresa");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Notificacion", b =>

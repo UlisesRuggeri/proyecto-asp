@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+﻿using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using EsteroidesToDo.Domain.Interfaces;
 
 namespace EsteroidesToDo.Application.Services.UserServices
@@ -11,12 +12,11 @@ namespace EsteroidesToDo.Application.Services.UserServices
             _repo = repo;
         }
 
-       public async Task RegistrarUsuario(RegisterDto dto)
+       public async Task<OperationResult<bool>> RegistrarUsuario(RegisterDto dto)
         {
 
             if (await _repo.EmailExiste(dto.Email))
-                throw new InvalidOperationException("El correo ya está registrado.");
-
+                return OperationResult<bool>.Failure("email no encontrado");
 
             string hash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
@@ -27,6 +27,8 @@ namespace EsteroidesToDo.Application.Services.UserServices
                 ContraseniaHash = hash
             };
             await _repo.Agregar(nuevoUsuario);
+
+            return OperationResult<bool>.Success(true);
         }
 
     }

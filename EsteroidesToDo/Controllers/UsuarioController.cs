@@ -1,4 +1,5 @@
-﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+﻿using EsteroidesToDo.Application.Common; 
+using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using EsteroidesToDo.Application.Services.AutenticacionServices;
 using EsteroidesToDo.Application.Services.UserServices;
 using EsteroidesToDo.Application.ViewModels.UsuarioViewModel;
@@ -12,6 +13,7 @@ namespace EsteroidesToDo.Controllers
 {
     /// <summary>
     /// Controller responsible for user authentication, registration, and profile information.
+    /// Uses the Result Pattern for cleaner error handling between services and controller.
     /// </summary>
     public class UsuarioController : Controller
     {
@@ -23,7 +25,7 @@ namespace EsteroidesToDo.Controllers
         public UsuarioController(
             LoginService loginService,
             RegisterService registerService,
-            UsuarioInfoService usuarioInfoService
+            UsuarioInfoService usuarioInfoService,
             AuthService authService)
         {
             _authService = authService;
@@ -35,16 +37,9 @@ namespace EsteroidesToDo.Controllers
         // ---------------------------
         // Helper Methods
         // ---------------------------
-        private string? GetUserEmail()
-        {
-            return User.FindFirstValue(ClaimTypes.Email);
-        }
+        private string? GetUserEmail() => User.FindFirstValue(ClaimTypes.Email);
 
-        private int? GetUserId()
-        {
-            return int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int id) ? id : (int?)null;
-        }
-
+        
         // ---------------------------
         // User Info
         // ---------------------------
@@ -53,11 +48,12 @@ namespace EsteroidesToDo.Controllers
         public async Task<IActionResult> Informacion(string? returnUrl = null)
         {
             var email = GetUserEmail();
-            if (string.IsNullOrEmpty(email)) return Unauthorized();
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized();
 
             var viewModel = await _usuarioInfoService.ObtenerUsuarioInfo(email);
             ViewData["ReturnUrl"] = returnUrl;
-            return View(viewModel);
+            return View(viewModel.Value);
         }
 
         // ---------------------------
@@ -86,11 +82,13 @@ namespace EsteroidesToDo.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuario = await _loginService.VerificarLogin(model.Email.Trim(), model.Password.Trim());
-            if (usuario == null)
-                return Unauthorized(new { error = "Email or password incorrect." });
+            // Service returns OperationResult<Usuario>
+            var result = await _loginService.VerificarLogin(model.Email.Trim(), model.Password.Trim());
 
-            var principal = _authService.CreateClaimsPrincipal(usuario);
+            if (!result.IsSuccess)
+                return Unauthorized(new { error = result.Error });
+
+            var principal = _authService.CreateClaimsPrincipal(result.Value);
             await HttpContext.SignInAsync("CookieAuth", principal);
 
             return RedirectToAction("Index", "Home");
@@ -109,12 +107,16 @@ namespace EsteroidesToDo.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _registerService.RegistrarUsuario(new RegisterDto
+            // Service returns OperationResult<bool>
+            var result = await _registerService.RegistrarUsuario(new RegisterDto
             {
                 Nombre = model.Nombre.Trim(),
                 Email = model.Email.Trim(),
                 Password = model.Password
             });
+
+            if (!result.IsSuccess)
+                return BadRequest(new { error = result.Error });
 
             return RedirectToAction(nameof(Login));
         }
@@ -123,7 +125,7 @@ namespace EsteroidesToDo.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction(nameof(Register));
         }
     }
 }

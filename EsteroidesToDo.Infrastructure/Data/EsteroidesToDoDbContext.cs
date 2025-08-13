@@ -26,6 +26,19 @@ namespace EsteroidesToDo.Infrastructure.Data
             modelBuilder.Entity<UsuarioVacante>()
                 .HasKey(uv => new { uv.UsuarioId, uv.VacanteId });
 
+            modelBuilder.Entity<UsuarioVacante>()
+                .HasOne(uv => uv.Vacante)
+                .WithMany(v => v.UsuarioVacantes)  
+                .HasForeignKey(uv => uv.VacanteId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UsuarioVacante>()
+                .HasOne(uv => uv.Usuario)
+                .WithMany(u => u.UsuarioVacantes)  
+                .HasForeignKey(uv => uv.UsuarioId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
             modelBuilder.Entity<Tarea>()
                 .HasOne(t => t.UsuarioAsignado)
                 .WithMany()
@@ -56,17 +69,7 @@ namespace EsteroidesToDo.Infrastructure.Data
                 .HasForeignKey(u => u.EmpresaId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<UsuarioVacante>()
-                .HasOne(uv => uv.Usuario)
-                .WithMany(u => u.UsuarioVacantes)
-                .HasForeignKey(uv => uv.UsuarioId)
-                .OnDelete(DeleteBehavior.NoAction); 
 
-            modelBuilder.Entity<UsuarioVacante>()
-                .HasOne(uv => uv.Vacante)
-                .WithMany(v => v.UsuarioVacantes)
-                .HasForeignKey(uv => uv.VacanteId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

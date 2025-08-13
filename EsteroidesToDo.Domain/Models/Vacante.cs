@@ -22,18 +22,14 @@ namespace EsteroidesToDo.Models
         public Empresa Empresa { get; set; }
 
         [Required]
-        public int UsuarioId { get; set; }
-
-        [ForeignKey("UsuarioId")]
-        public Usuario Usuario { get; set; }
-
-        [Required]
         public string Estado { get; set; } = "Activa";
 
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
         public ICollection<UsuarioVacante> Postulaciones { get; set; } = new List<UsuarioVacante>();
         public ICollection<UsuarioVacante> UsuarioVacantes { get; set; } = new List<UsuarioVacante>();
+
+
 
     }
 }

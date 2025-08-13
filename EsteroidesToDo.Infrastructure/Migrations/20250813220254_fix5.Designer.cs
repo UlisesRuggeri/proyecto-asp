@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EsteroidesToDo.Infrastructure.Migrations
 {
     [DbContext(typeof(EsteroidesToDoDbContext))]
-    [Migration("20250807222740_FirstGood")]
-    partial class FirstGood
+    [Migration("20250813220254_fix5")]
+    partial class fix5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -263,14 +263,9 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EmpresaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Vacantes");
                 });
@@ -473,15 +468,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Empresa");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Notificacion", b =>

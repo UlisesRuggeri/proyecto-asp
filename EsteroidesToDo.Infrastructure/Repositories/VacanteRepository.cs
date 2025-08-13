@@ -13,20 +13,20 @@ namespace EseroidesToDo.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<bool> UsuarioPuedeCrearVacante(int usuarioId)
+        public async Task<bool> PuedeCrearVacanteAsync(int usuarioId)
         {
             return await _context.Empresas
                 .AsNoTracking()
                 .AnyAsync(e => e.IdDuenio == usuarioId);
         }
 
-        public async Task CrearVacante(Vacante vacante)
+        public async Task AgregarVacanteAsync(Vacante vacante)
         {
             _context.Vacantes.Add(vacante);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Vacante>> ObtenerTodasLasVacantes()
+        public async Task<List<Vacante>> ObtenerTodasAsync()
         {
             return await _context.Vacantes
                 .Include(v => v.Empresa)
@@ -34,15 +34,16 @@ namespace EseroidesToDo.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Vacante>> ObtenerTodasLasVacantesDeUnaEmpresa(int usuarioId)
+        public async Task<List<Vacante>> ObtenerPorEmpresaAsync(int usuarioId)
         {
             return await _context.Vacantes
                 .Include(v => v.UsuarioVacantes)
-                .Where(v => v.UsuarioId == usuarioId)
+                .Where(v => v.UsuarioVacantes.Any(uv => uv.UsuarioId == usuarioId))
                 .AsNoTracking()
                 .ToListAsync();
+
         }
-        public async Task CambiarEstadoVacante(int vacanteId, string nuevoEstado)
+        public async Task ActualizarEstadoAsync(int vacanteId, string nuevoEstado)
         {
             var vacante = await _context.Vacantes.FirstOrDefaultAsync(v => v.Id == vacanteId);
             if (vacante == null) return;
@@ -50,7 +51,7 @@ namespace EseroidesToDo.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task AceptarPostulado(int vacanteId, int usuarioId)
+        public async Task MarcarPostuladoComoAceptadoAsync(int vacanteId, int usuarioId)
         {
 
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
@@ -58,24 +59,15 @@ namespace EseroidesToDo.Infrastructure.Repositories
                 .Include(v => v.UsuarioVacantes)
                 .FirstOrDefaultAsync(v => v.Id == vacanteId);
 
-            if (vacante == null)
-                throw new Exception("Vacante no encontrada");
-
             var postulado = vacante.UsuarioVacantes.FirstOrDefault(p => p.UsuarioId == usuarioId);
 
-            if (postulado == null)
-                throw new Exception("Postulado no encontrado");
-
             postulado.Estado = "Aceptado";
-            if(usuario.EmpresaId != null)
-            {
-                throw new Exception("Usuario ya pertenece a una empresa");
-            }
+           
             usuario.EmpresaId = vacante.EmpresaId;
             await _context.SaveChangesAsync();
         }
 
-        public async Task RechazarPostulado(int usuarioId, int vacanteId)
+        public async Task MarcarPostuladoComoRechazadoAsync(int vacanteId, int usuarioId)
         {
 
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
@@ -83,19 +75,10 @@ namespace EseroidesToDo.Infrastructure.Repositories
                 .Include(v => v.UsuarioVacantes)
                 .FirstOrDefaultAsync(v => v.Id == vacanteId);
 
-            if (vacante == null)
-                throw new Exception("Vacante no encontrada");
-
             var postulado = vacante.UsuarioVacantes.FirstOrDefault(p => p.UsuarioId == usuarioId);
 
-            if (postulado == null)
-                throw new Exception("Postulado no encontrado");
-
             postulado.Estado = "Rechazado";
-            if (usuario.EmpresaId != null)
-            {
-                throw new Exception("Usuario ya pertenece a una empresa");
-            }
+
             await _context.SaveChangesAsync();
         }
 

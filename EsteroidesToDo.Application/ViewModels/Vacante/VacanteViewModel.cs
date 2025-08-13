@@ -1,7 +1,7 @@
 ﻿
 namespace EsteroidesToDo.Application.ViewModels
 {
-    internal class VacanteViewModel
+    public class VacanteViewModel
     {
         public int VacanteId { get; set; }
         public string Titulo { get; set; }
