@@ -1,9 +1,11 @@
-﻿using EsteroidesToDo.Application.Common;
+﻿
+using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.Interfaces.Decorators;
 using EsteroidesToDo.Domain.Interfaces;
 
 namespace EsteroidesToDo.Application.Services.UserServices
 {
-    public class UsuarioInfoService
+    public class UsuarioInfoService : IUsuarioInfoService
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IEmpresaRepository _empresaRepository;
@@ -17,7 +19,8 @@ namespace EsteroidesToDo.Application.Services.UserServices
         public async Task<OperationResult<UsuarioInfoViewModel>> ObtenerUsuarioInfo(string email)
         {
             var usuario = await _usuarioRepository.ObtenerPorEmailAsync(email);
-            if (usuario == null) return OperationResult<UsuarioInfoViewModel>.Failure("Usuario no encontrado");
+            if (usuario == null)
+                return OperationResult<UsuarioInfoViewModel>.Failure("Usuario no encontrado");
 
             var empresa = await _empresaRepository.ObtenerPorIdDuenioAsync(usuario.Id);
 

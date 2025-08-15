@@ -7,6 +7,6 @@ namespace EsteroidesToDo.Domain.Interfaces
         Task<bool> EmailExiste(string email);
         Task Agregar(Usuario nuevoUsuario);
         Task AgregarEmpresaId(int usuarioId, int empresaId);
-        Task<int?> ObtenerEmpresaDelUsuarioAsync(int usuarioId);
+        Task<int?> ObtenerEmpresaDelUsuarioAsync(int? usuarioId);
     }
 }

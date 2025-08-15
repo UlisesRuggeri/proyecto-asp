@@ -1,40 +1,40 @@
 ﻿using EsteroidesToDo.Application.Common;
 using EsteroidesToDo.Application.DTOs.VacanteDtos;
-using EsteroidesToDo.Application.Interfaces;
+using EsteroidesToDo.Application.Interfaces.Vacante;
 using EsteroidesToDo.Application.ViewModels;
+using EsteroidesToDo.Domain.Filters;
 using EsteroidesToDo.Domain.Interfaces;
+using EsteroidesToDo.Domain.Pagination;
 
-public class VacanteInfoService : IVacanteInfoService
+public class VacanteInfoService : IVacanteQueryService
 {
-    private readonly IVacanteRepository _repo;
+    private readonly IVacanteRepository _vacanteRepository;
     private readonly IUsuarioRepository _usuarioRepository;
 
-    public VacanteInfoService(IVacanteRepository repo, IUsuarioRepository usuarioRepository)
+    public VacanteInfoService(IVacanteRepository vacanteRepository, IUsuarioRepository usuarioRepository)
     {
+        _vacanteRepository = vacanteRepository;
         _usuarioRepository = usuarioRepository;
-        _repo = repo;
     }
-    //ObtenerEmpresaDelUsuarioAsync(int usuarioId)
-    public async Task<OperationResult<List<VacanteInfoDto>>> ObtenerTodasLasVacantes(int userId)
+
+    public async Task<OperationResult<PagedResult<VacanteInfoDto>>> ObtenerVacantesPaginadas(string? vacanteSolicitada,int? userId, int page, int pageSize)
     {
-        var vacantes = await _repo.ObtenerTodasAsync();
-
-        var result = new List<VacanteInfoDto>();
-
-        foreach (var v in vacantes)
+        var empresaDelUsuario = await _usuarioRepository.ObtenerEmpresaDelUsuarioAsync(userId);
+        
+        var filter = new VacanteFilter
         {
-            //2 casos posibles: 
-            //1_ el usuario pertenece a una empresa por lo tanto no puede postular
-            //2_El usuario no pertenece a ninguna empresa pero ya postulo a X vacante
-            var puedePostular = !await _repo.UsuarioPuedePostular(v.Id, userId);
+            SearchTerm = vacanteSolicitada
+        };
 
-            var empresaDelUsuario = await _usuarioRepository.ObtenerEmpresaDelUsuarioAsync(userId);
-            if (empresaDelUsuario != null) puedePostular = false;
+        var pagedVacantes = await _vacanteRepository.GetVacantesAsync(filter, page, pageSize);
 
-            Console.WriteLine($"VacanteId: {v.Id}, UsuarioId: {userId}, PuedePostular: {puedePostular}");
+        var dtoItems = new List<VacanteInfoDto>();
 
+        foreach (var v in pagedVacantes.Items)
+        {
+            bool puedePostular = empresaDelUsuario == null && !await _vacanteRepository.UsuarioPuedePostular(v.Id, userId);
 
-            result.Add(new VacanteInfoDto
+            dtoItems.Add(new VacanteInfoDto
             {
                 VacanteId = v.Id,
                 Titulo = v.Titulo,
@@ -46,23 +46,33 @@ public class VacanteInfoService : IVacanteInfoService
             });
         }
 
+        var result = new PagedResult<VacanteInfoDto>
+        {
+            Items = dtoItems,
+            TotalCount = pagedVacantes.TotalCount,
+            PageNumber = pagedVacantes.PageNumber,
+            PageSize = pagedVacantes.PageSize
+        };
 
-
-        return OperationResult<List<VacanteInfoDto>>.Success(result);
+        return OperationResult<PagedResult<VacanteInfoDto>>.Success(result);
     }
 
-    public async Task<OperationResult<VacantesVistaViewModel>> ObtenerVistaVacantes(int userId)
+    public async Task<OperationResult<VacantesVistaViewModel>> ObtenerVistaVacantes(string? vacanteSolicitada,int? userId, int page , int pageSize )
     {
-        var esDuenio = await _repo.PuedeCrearVacanteAsync(userId);
-        var vacantesResult = await ObtenerTodasLasVacantes(userId); 
+        var esDuenio = await _vacanteRepository.PuedeCrearVacanteAsync(userId);
+        var vacantesPaginadas = await ObtenerVacantesPaginadas(vacanteSolicitada, userId, page, pageSize);
+
         var VacantesVistaVM = new VacantesVistaViewModel
         {
             EsDuenio = esDuenio,
-            Vacantes = vacantesResult.Value
+            Vacantes = vacantesPaginadas.Value.Items,
+            PageNumber = vacantesPaginadas.Value.PageNumber,
+            PageSize = vacantesPaginadas.Value.PageSize,
+            TotalCount = vacantesPaginadas.Value.TotalCount
         };
 
         return OperationResult<VacantesVistaViewModel>.Success(VacantesVistaVM);
     }
-
-
+        
 }
+    

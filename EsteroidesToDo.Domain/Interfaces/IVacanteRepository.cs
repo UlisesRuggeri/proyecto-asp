@@ -1,4 +1,6 @@
 ﻿
+using EsteroidesToDo.Domain.Filters;
+using EsteroidesToDo.Domain.Pagination;
 using EsteroidesToDo.Models;
 
 namespace EsteroidesToDo.Domain.Interfaces
@@ -10,8 +12,6 @@ namespace EsteroidesToDo.Domain.Interfaces
 
         Task AgregarVacanteAsync(Vacante vacante);
 
-        Task<List<Vacante>> ObtenerTodasAsync();
-
         Task<List<Vacante>> ObtenerPorEmpresaAsync(int usuarioId);
         Task MarcarPostuladoComoAceptadoAsync(int vacanteId, int usuarioId);
 
@@ -22,5 +22,10 @@ namespace EsteroidesToDo.Domain.Interfaces
         Task BorrarVacante(int VacanteId);
 
         Task<bool> UsuarioPuedePostular(int VacanteId, int? UsuarioId);
+
+        Task<PagedResult<Vacante>> GetVacantesAsync(
+            VacanteFilter filter,
+            int pageNumber = 1,
+            int pageSize = 10);
     }
 }

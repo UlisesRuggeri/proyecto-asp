@@ -1,9 +1,8 @@
-﻿
-using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using System.Security.Claims;
 
 
-namespace EsteroidesToDo.Application.Interfaces
+namespace EsteroidesToDo.Application.Interfaces.Usuario
 {
     public interface IAuthService
     {

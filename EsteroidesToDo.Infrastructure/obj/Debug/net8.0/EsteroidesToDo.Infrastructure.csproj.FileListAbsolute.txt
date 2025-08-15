@@ -16,3 +16,5 @@ D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\refint\Esteroid
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.pdb
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.genruntimeconfig.cache
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\ref\EsteroidesToDo.Infrastructure.dll
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.dll
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.pdb

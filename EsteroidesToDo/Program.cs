@@ -8,6 +8,8 @@ using EsteroidesToDo.Infrastructure.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddAuthentication("CookieAuth")
     .AddCookie("CookieAuth", options =>
     {
@@ -22,6 +24,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddDbContext<EsteroidesToDoDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TodoConnection")));
 
+builder.Services.AddCacheDecorators();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServiceRegistration();
 

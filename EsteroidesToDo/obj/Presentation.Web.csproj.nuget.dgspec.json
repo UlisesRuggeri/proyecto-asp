@@ -176,6 +176,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "D:\\EsteroidesToDo\\EsteroidesToDo.Application\\EsteroidesToDo.Application.csproj": {
+                "projectPath": "D:\\EsteroidesToDo\\EsteroidesToDo.Application\\EsteroidesToDo.Application.csproj"
+              },
               "D:\\EsteroidesToDo\\EsteroidesToDo.Domain\\EsteroidesToDo.Domain.csproj": {
                 "projectPath": "D:\\EsteroidesToDo\\EsteroidesToDo.Domain\\EsteroidesToDo.Domain.csproj"
               }
@@ -299,6 +302,10 @@
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[9.0.8, )"
+            },
+            "Scrutor": {
+              "target": "Package",
+              "version": "[6.1.0, )"
             }
           },
           "imports": [

@@ -1,10 +1,9 @@
-﻿using EsteroidesToDo.Application.Common; 
-using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
+using EsteroidesToDo.Application.Interfaces.Cache;
 using EsteroidesToDo.Application.Services.AutenticacionServices;
 using EsteroidesToDo.Application.Services.UserServices;
 using EsteroidesToDo.Application.ViewModels.UsuarioViewModel;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,6 +16,7 @@ namespace EsteroidesToDo.Controllers
     /// </summary>
     public class UsuarioController : Controller
     {
+        private readonly IClearCacheService _clearCacheService;
         private readonly AuthService _authService;
         private readonly LoginService _loginService;
         private readonly RegisterService _registerService;
@@ -26,8 +26,10 @@ namespace EsteroidesToDo.Controllers
             LoginService loginService,
             RegisterService registerService,
             UsuarioInfoService usuarioInfoService,
-            AuthService authService)
+            AuthService authService,
+            IClearCacheService clearCacheService)
         {
+            _clearCacheService = clearCacheService;
             _authService = authService;
             _loginService = loginService;
             _registerService = registerService;
@@ -124,7 +126,10 @@ namespace EsteroidesToDo.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            var email = GetUserEmail();
             await HttpContext.SignOutAsync("CookieAuth");
+
+            _clearCacheService.ClearUserCache(email);
             return RedirectToAction(nameof(Register));
         }
     }

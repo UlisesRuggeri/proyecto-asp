@@ -14,11 +14,18 @@ namespace EsteroidesToDo.Infrastructure.Repositories
             _context = context;
         }
 
+        // ─────────────────────────────────────
+        // OBTENER
+        // ─────────────────────────────────────
         public async Task<Empresa?> ObtenerPorIdDuenioAsync(int idDuenio)
         {
-            return await _context.Empresas.FirstOrDefaultAsync(e => e.IdDuenio == idDuenio);
+            return await _context.Empresas
+                .FirstOrDefaultAsync(e => e.IdDuenio == idDuenio);
         }
 
+        // ─────────────────────────────────────
+        // CREAR
+        // ─────────────────────────────────────
         public async Task CrearEmpresa(Empresa empresa)
         {
             _context.Empresas.Add(empresa);

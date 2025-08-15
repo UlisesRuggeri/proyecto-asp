@@ -1,5 +1,5 @@
 ﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
-using EsteroidesToDo.Application.Interfaces;
+using EsteroidesToDo.Application.Interfaces.Usuario;
 using System.Security.Claims;
 
 

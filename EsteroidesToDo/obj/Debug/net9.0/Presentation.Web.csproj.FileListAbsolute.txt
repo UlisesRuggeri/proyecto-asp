@@ -239,3 +239,4 @@ D:\EsteroidesToDo\EsteroidesToDo\obj\Debug\net9.0\refint\Presentation.Web.dll
 D:\EsteroidesToDo\EsteroidesToDo\obj\Debug\net9.0\Presentation.Web.pdb
 D:\EsteroidesToDo\EsteroidesToDo\obj\Debug\net9.0\Presentation.Web.genruntimeconfig.cache
 D:\EsteroidesToDo\EsteroidesToDo\obj\Debug\net9.0\ref\Presentation.Web.dll
+D:\EsteroidesToDo\EsteroidesToDo\bin\Debug\net9.0\Scrutor.dll

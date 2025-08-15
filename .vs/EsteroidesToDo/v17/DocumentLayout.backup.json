@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\EsteroidesToDo\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{34143173-198A-4FE7-B399-7FC3E6C2AF82}|EsteroidesToDo.Infrastructure\\EsteroidesToDo.Infrastructure.csproj|d:\\esteroidestodo\\esteroidestodo.infrastructure\\repositories\\vacanterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{34143173-198A-4FE7-B399-7FC3E6C2AF82}|EsteroidesToDo.Infrastructure\\EsteroidesToDo.Infrastructure.csproj|solutionrelative:esteroidestodo.infrastructure\\repositories\\vacanterepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AAA7739D-68B4-404F-9854-667DFB47181F}|EsteroidesToDo\\Presentation.Web.csproj|d:\\esteroidestodo\\esteroidestodo\\views\\vacante\\vacantes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{AAA7739D-68B4-404F-9854-667DFB47181F}|EsteroidesToDo\\Presentation.Web.csproj|solutionrelative:esteroidestodo\\views\\vacante\\vacantes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AAA7739D-68B4-404F-9854-667DFB47181F}|EsteroidesToDo\\Presentation.Web.csproj|d:\\esteroidestodo\\esteroidestodo\\controllers\\vacantecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AAA7739D-68B4-404F-9854-667DFB47181F}|EsteroidesToDo\\Presentation.Web.csproj|solutionrelative:esteroidestodo\\controllers\\vacantecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "VacanteRepository.cs",
-              "DocumentMoniker": "D:\\EsteroidesToDo\\EsteroidesToDo.Infrastructure\\Repositories\\VacanteRepository.cs",
-              "RelativeDocumentMoniker": "EsteroidesToDo.Infrastructure\\Repositories\\VacanteRepository.cs",
-              "ToolTip": "D:\\EsteroidesToDo\\EsteroidesToDo.Infrastructure\\Repositories\\VacanteRepository.cs",
-              "RelativeToolTip": "EsteroidesToDo.Infrastructure\\Repositories\\VacanteRepository.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAcwD0AAAAAAAAAAAAAAA==",
+              "Title": "Vacantes.cshtml",
+              "DocumentMoniker": "D:\\EsteroidesToDo\\EsteroidesToDo\\Views\\Vacante\\Vacantes.cshtml",
+              "RelativeDocumentMoniker": "EsteroidesToDo\\Views\\Vacante\\Vacantes.cshtml",
+              "ToolTip": "D:\\EsteroidesToDo\\EsteroidesToDo\\Views\\Vacante\\Vacantes.cshtml",
+              "RelativeToolTip": "EsteroidesToDo\\Views\\Vacante\\Vacantes.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-15T19:47:15.095Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "VacanteController.cs",
+              "DocumentMoniker": "D:\\EsteroidesToDo\\EsteroidesToDo\\Controllers\\VacanteController.cs",
+              "RelativeDocumentMoniker": "EsteroidesToDo\\Controllers\\VacanteController.cs",
+              "ToolTip": "D:\\EsteroidesToDo\\EsteroidesToDo\\Controllers\\VacanteController.cs",
+              "RelativeToolTip": "EsteroidesToDo\\Controllers\\VacanteController.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAA5wEAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-14T21:35:26.468Z",
+              "WhenOpened": "2025-08-15T17:31:18.275Z",
               "EditorCaption": ""
             }
           ]

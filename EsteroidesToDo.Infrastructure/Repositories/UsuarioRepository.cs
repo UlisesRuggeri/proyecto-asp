@@ -13,31 +13,16 @@ namespace EsteroidesToDo.Infrastructure.Repositories
             _context = context;
         }
 
+        // ─────────────────────────────────────
+        // OBTENER
+        // ─────────────────────────────────────
         public async Task<Usuario?> ObtenerPorEmailAsync(string email)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
-        }
-        public async Task<bool> EmailExiste(string email)
-        {
             return await _context.Usuarios
-                .AnyAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task Agregar(Usuario nuevoUsuario)
-        {
-            _context.Usuarios.Add(nuevoUsuario);
-            await _context.SaveChangesAsync();
-        }
-        public async Task AgregarEmpresaId(int usuarioId, int empresaId)
-        {
-            var usuario = await _context.Usuarios.FindAsync(usuarioId);
-            if (usuario == null) return;
-
-            usuario.EmpresaId = empresaId;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<int?> ObtenerEmpresaDelUsuarioAsync(int usuarioId)
+        public async Task<int?> ObtenerEmpresaDelUsuarioAsync(int? usuarioId)
         {
             var usuario = await _context.Usuarios
                 .AsNoTracking()
@@ -46,5 +31,31 @@ namespace EsteroidesToDo.Infrastructure.Repositories
             return usuario?.EmpresaId;
         }
 
+        // ─────────────────────────────────────
+        // VALIDAR
+        // ─────────────────────────────────────
+        public async Task<bool> EmailExiste(string email)
+        {
+            return await _context.Usuarios
+                .AnyAsync(u => u.Email == email);
+        }
+
+        // ─────────────────────────────────────
+        // CREAR / ACTUALIZAR
+        // ─────────────────────────────────────
+        public async Task Agregar(Usuario nuevoUsuario)
+        {
+            _context.Usuarios.Add(nuevoUsuario);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AgregarEmpresaId(int usuarioId, int empresaId)
+        {
+            var usuario = await _context.Usuarios.FindAsync(usuarioId);
+            if (usuario == null) return;
+
+            usuario.EmpresaId = empresaId;
+            await _context.SaveChangesAsync();
+        }
     }
 }

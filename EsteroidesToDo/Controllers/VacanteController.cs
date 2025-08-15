@@ -13,6 +13,8 @@ namespace EsteroidesToDo.Controllers
     [Authorize]
     public class VacanteController : Controller
     {
+        private const int DEFAULT_PAGE_SIZE = 10;
+        private const int MAX_PAGE_SIZE = 25;
 
         private readonly BorrarVacanteService _borrarVacanteService;
         private readonly CrearVacanteService _crearVacanteService;
@@ -45,19 +47,29 @@ namespace EsteroidesToDo.Controllers
         [HttpGet]
         public IActionResult CrearVacante() => View();
 
-        public async Task<IActionResult> Vacantes()
+        public async Task<IActionResult> Vacantes(
+            [FromQuery] string? q,
+            [FromQuery(Name = "page" )] int pageNumber = 1,
+            [FromQuery(Name = "Size")] int pageSize = DEFAULT_PAGE_SIZE
+            )
         {
-            var userId = GetUserId();
-            if (userId == null) return Unauthorized();
+            pageNumber = pageNumber < 1 ? 1 : pageNumber;
+            pageSize = pageSize <= 0 ? DEFAULT_PAGE_SIZE : Math.Min(pageSize, MAX_PAGE_SIZE);
 
-            var result = await _vacanteInfoService.ObtenerVistaVacantes(userId.Value);
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);    
-            }
-            
-            return View(result.Value);
+
+            int? userId = GetUserId();
+            var op = await _vacanteInfoService.ObtenerVistaVacantes(q, userId, pageNumber, pageSize);
+
+
+            if (!op.IsSuccess)
+                return Problem(op.Error ?? "No se pudieron obtener las vacantes.");
+
+
+            ViewData["q"] = q; 
+            return View(op.Value);
         }
+
+        
 
         [HttpPost]
         public async Task<IActionResult> CrearVacante(CrearVacanteViewModel model)

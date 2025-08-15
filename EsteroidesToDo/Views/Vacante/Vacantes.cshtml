@@ -12,18 +12,25 @@
     <a asp-action="ListaPostulados" class="btn btn-success mb-3">Mis vacantes</a>
 }
 
+<form method="get" class="mb-3">
+    <input type="text" name="q" value="@ViewData["q"]" placeholder="Buscar..." class="form-control" />
+    <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
-            <th>Título: </th>
+            <th>Título</th>
             <th>EmpresaNombre</th>
-            <th>Descripción: </th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>FechaCreacion</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var vacante in Model.Vacantes)
         {
-            
             <tr>
                 <td>@vacante.Titulo</td>
                 <td>@vacante.EmpresaNombre</td>
@@ -36,8 +43,20 @@
                         <a asp-action="Postular" asp-route-VacanteId="@vacante.VacanteId" class="btn btn-success mb-2">Postular</a>
                     }
                 </td>
-
             </tr>
         }
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= (int)Math.Ceiling((double)Model.TotalCount / Model.PageSize); i++)
+        {
+            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Vacantes", new { page = i, Size = Model.PageSize, q = ViewData["q"] })">
+                    @i
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

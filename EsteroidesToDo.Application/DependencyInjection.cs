@@ -4,6 +4,7 @@ using EsteroidesToDo.Application.Services.UserServices;
 using EsteroidesToDo.Application.Services.VacanteServices;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace EsteroidesToDo.Application
 {
     public static class DependencyInjection
@@ -24,6 +25,8 @@ namespace EsteroidesToDo.Application
             services.AddScoped<VacanteInfoService>();
             services.AddScoped<PostulacionesVacantesService>();
             services.AddScoped<BorrarVacanteService>();
+
+      
 
             return services;
         }

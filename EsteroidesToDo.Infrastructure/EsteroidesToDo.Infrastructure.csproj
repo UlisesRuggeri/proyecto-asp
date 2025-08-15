@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EsteroidesToDo.Application\EsteroidesToDo.Application.csproj" />
     <ProjectReference Include="..\EsteroidesToDo.Domain\EsteroidesToDo.Domain.csproj" />
   </ItemGroup>
 
