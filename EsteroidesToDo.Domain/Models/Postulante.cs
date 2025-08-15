@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EsteroidesToDo.Models
 {
-    public class UsuarioVacante
+    public class Postulante
     {
 
         public int UsuarioId { get; set; }

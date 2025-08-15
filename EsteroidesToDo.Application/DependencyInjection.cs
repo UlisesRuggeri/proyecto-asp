@@ -23,6 +23,7 @@ namespace EsteroidesToDo.Application
             services.AddScoped<CrearVacanteService>();
             services.AddScoped<VacanteInfoService>();
             services.AddScoped<PostulacionesVacantesService>();
+            services.AddScoped<BorrarVacanteService>();
 
             return services;
         }

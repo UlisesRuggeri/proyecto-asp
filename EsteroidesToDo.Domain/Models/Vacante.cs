@@ -26,8 +26,8 @@ namespace EsteroidesToDo.Models
 
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
 
-        public ICollection<UsuarioVacante> Postulaciones { get; set; } = new List<UsuarioVacante>();
-        public ICollection<UsuarioVacante> UsuarioVacantes { get; set; } = new List<UsuarioVacante>();
+        public ICollection<Postulante> Postulaciones { get; set; } = new List<Postulante>();
+        public ICollection<Postulante> UsuarioVacantes { get; set; } = new List<Postulante>();
 
 
 

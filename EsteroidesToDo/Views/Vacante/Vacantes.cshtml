@@ -23,12 +23,20 @@
     <tbody>
         @foreach (var vacante in Model.Vacantes)
         {
+            
             <tr>
                 <td>@vacante.Titulo</td>
                 <td>@vacante.EmpresaNombre</td>
                 <td>@vacante.Descripcion</td>
                 <td>@vacante.Estado</td>
                 <td>@vacante.FechaCreacion</td>
+                <td>
+                    @if (vacante.PuedePostular)
+                    {
+                        <a asp-action="Postular" asp-route-VacanteId="@vacante.VacanteId" class="btn btn-success mb-2">Postular</a>
+                    }
+                </td>
+
             </tr>
         }
     </tbody>

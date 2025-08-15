@@ -121,10 +121,10 @@ namespace EsteroidesToDo.Controllers
             return RedirectToAction(nameof(Login));
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync("CookieAuth");
             return RedirectToAction(nameof(Register));
         }
     }

@@ -5,10 +5,9 @@ namespace EsteroidesToDo.Models
 {
     public class ConversacionesTarea
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        [Required]
         public int TareaId { get; set; }
+        [Required]
         public int UsuarioId {get;set;}
         [Required]
         public string? Mensaje { get; set; }

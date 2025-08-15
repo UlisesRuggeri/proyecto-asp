@@ -27,7 +27,7 @@ public class Usuario
     public Empresa? Empresa { get; set; }
 
 
-    public ICollection<UsuarioVacante> UsuarioVacantes { get; set; } = new List<UsuarioVacante>();
+    public ICollection<Postulante> UsuarioVacantes { get; set; } = new List<Postulante>();
 
     public DateOnly FechaCreacion { get; set; } = DateOnly.FromDateTime(DateTime.Today);
 

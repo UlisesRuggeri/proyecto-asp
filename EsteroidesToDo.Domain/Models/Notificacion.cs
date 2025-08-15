@@ -4,9 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Notificacion
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
 
     [Required]
     public int IdEmpresa { get; set; }

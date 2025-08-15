@@ -24,11 +24,11 @@ namespace EsteroidesToDo.Infrastructure.Migrations
 
             modelBuilder.Entity("EsteroidesToDo.Models.ConversacionesTarea", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("TareaId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
 
                     b.Property<DateOnly>("FechaCreacion")
                         .HasColumnType("date");
@@ -37,15 +37,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TareaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TareaId");
+                    b.HasKey("TareaId", "UsuarioId");
 
                     b.HasIndex("UsuarioId");
 
@@ -96,6 +88,37 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstadosTareas");
+                });
+
+            modelBuilder.Entity("EsteroidesToDo.Models.Postulante", b =>
+                {
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VacanteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaPostulacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PropuestaTexto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("VacanteId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("UsuarioId", "VacanteId");
+
+                    b.HasIndex("VacanteId");
+
+                    b.HasIndex("VacanteId1");
+
+                    b.ToTable("Postulantes", (string)null);
                 });
 
             modelBuilder.Entity("EsteroidesToDo.Models.Proyecto", b =>
@@ -178,11 +201,8 @@ namespace EsteroidesToDo.Infrastructure.Migrations
 
             modelBuilder.Entity("EsteroidesToDo.Models.UsuarioProyectoRol", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProyectoId")
                         .HasColumnType("int");
@@ -191,47 +211,11 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("UsuarioId", "ProyectoId");
 
                     b.HasIndex("ProyectoId");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("UsuarioProyectoRoles");
-                });
-
-            modelBuilder.Entity("EsteroidesToDo.Models.UsuarioVacante", b =>
-                {
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VacanteId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Estado")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FechaPostulacion")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PropuestaTexto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("VacanteId1")
-                        .HasColumnType("int");
-
-                    b.HasKey("UsuarioId", "VacanteId");
-
-                    b.HasIndex("VacanteId");
-
-                    b.HasIndex("VacanteId1");
-
-                    b.ToTable("UsuarioVacantes");
                 });
 
             modelBuilder.Entity("EsteroidesToDo.Models.Vacante", b =>
@@ -269,11 +253,11 @@ namespace EsteroidesToDo.Infrastructure.Migrations
 
             modelBuilder.Entity("Notificacion", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("Contenido")
                         .IsRequired()
@@ -283,15 +267,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
+                    b.HasKey("IdEmpresa", "IdUsuario");
 
                     b.HasIndex("IdUsuario");
 
@@ -359,6 +335,29 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Duenio");
+                });
+
+            modelBuilder.Entity("EsteroidesToDo.Models.Postulante", b =>
+                {
+                    b.HasOne("Usuario", "Usuario")
+                        .WithMany("UsuarioVacantes")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EsteroidesToDo.Models.Vacante", "Vacante")
+                        .WithMany("UsuarioVacantes")
+                        .HasForeignKey("VacanteId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("EsteroidesToDo.Models.Vacante", null)
+                        .WithMany("Postulaciones")
+                        .HasForeignKey("VacanteId1");
+
+                    b.Navigation("Usuario");
+
+                    b.Navigation("Vacante");
                 });
 
             modelBuilder.Entity("EsteroidesToDo.Models.Proyecto", b =>
@@ -432,29 +431,6 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                     b.Navigation("Proyecto");
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("EsteroidesToDo.Models.UsuarioVacante", b =>
-                {
-                    b.HasOne("Usuario", "Usuario")
-                        .WithMany("UsuarioVacantes")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("EsteroidesToDo.Models.Vacante", "Vacante")
-                        .WithMany("UsuarioVacantes")
-                        .HasForeignKey("VacanteId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("EsteroidesToDo.Models.Vacante", null)
-                        .WithMany("Postulaciones")
-                        .HasForeignKey("VacanteId1");
-
-                    b.Navigation("Usuario");
-
-                    b.Navigation("Vacante");
                 });
 
             modelBuilder.Entity("EsteroidesToDo.Models.Vacante", b =>

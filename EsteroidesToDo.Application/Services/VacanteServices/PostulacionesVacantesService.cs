@@ -1,6 +1,7 @@
 ﻿
 
 using EsteroidesToDo.Application.Common;
+using EsteroidesToDo.Application.DTOs.VacanteDtos;
 using EsteroidesToDo.Domain.Interfaces;
 using EsteroidesToDo.Models;
 
@@ -28,17 +29,6 @@ namespace EsteroidesToDo.Application.Services.VacanteServices
             return OperationResult<List<Vacante>>.Success(vacantes);
         }
 
-        public async Task<OperationResult<bool>> CambiarEstadoVacante(int vacanteId,string nuevoEstado)
-        {
-            var estadosPermitidos = new[] { "Activa", "Cerrada" };
-            if (!estadosPermitidos.Contains(nuevoEstado))
-                return OperationResult<bool>.Failure("Estado no permitido.");
-
-            await _repo.ActualizarEstadoAsync(vacanteId, nuevoEstado);
-
-            return OperationResult<bool>.Success(true);
-        }
-
         public async Task<OperationResult<bool>> AceptarPostulado(int vacanteId, int usuarioId)
         {
             if (vacanteId == null) return OperationResult<bool>.Failure("Vacante no encontrada");
@@ -58,5 +48,27 @@ namespace EsteroidesToDo.Application.Services.VacanteServices
             return OperationResult<bool>.Success(true);
         }
 
+        public async Task<OperationResult<bool>> CrearPostulacion(PostulanteDto dto)
+        {
+            if (dto.VacanteId == null) return OperationResult<bool>.Failure("Id Vacante null");
+            if (dto.UsuarioId == null) return OperationResult<bool>.Failure("Id Usuario null");
+            if (await _usuarioRepository.ObtenerEmpresaDelUsuarioAsync(dto.UsuarioId) != null) return OperationResult<bool>.Failure("El usuario ya pertenece a una empresa");
+            var result = new Postulante 
+            {
+                VacanteId = dto.VacanteId,
+                UsuarioId = dto.UsuarioId,
+                PropuestaTexto = dto.PropuestaTexto,
+                Estado = dto.Estado
+            };
+            await _repo.CrearPostulacion(result);
+            return OperationResult<bool>.Success(true);
+        }
+
+        public async Task<OperationResult<bool>> UsuarioPuedePostular(int VacanteId,int? UsuarioId)
+        {
+
+            //verifica que existe un registro con las mismas "VacanteId, UsuarioId". por lo tanto si existe un registro no puede postular 
+            return !await _repo.UsuarioPuedePostular(VacanteId, UsuarioId)?OperationResult<bool>.Success(true) : OperationResult<bool>.Failure("");
+        }
     }
 }

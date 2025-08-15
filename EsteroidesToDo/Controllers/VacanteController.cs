@@ -13,6 +13,8 @@ namespace EsteroidesToDo.Controllers
     [Authorize]
     public class VacanteController : Controller
     {
+
+        private readonly BorrarVacanteService _borrarVacanteService;
         private readonly CrearVacanteService _crearVacanteService;
         private readonly VacanteInfoService _vacanteInfoService;
         private readonly PostulacionesVacantesService _postulacionesVacantesService;
@@ -20,8 +22,10 @@ namespace EsteroidesToDo.Controllers
         public VacanteController(
             VacanteInfoService vacanteInfo,
             CrearVacanteService crearVacanteService,
-            PostulacionesVacantesService postulacionesVacantesService)
+            PostulacionesVacantesService postulacionesVacantesService,
+            BorrarVacanteService borrarVacanteService)
         {
+            _borrarVacanteService = borrarVacanteService;
             _vacanteInfoService = vacanteInfo;
             _crearVacanteService = crearVacanteService;
             _postulacionesVacantesService = postulacionesVacantesService;
@@ -112,10 +116,11 @@ namespace EsteroidesToDo.Controllers
                         VacanteId = uv.VacanteId,
                         PropuestaTexto = uv.PropuestaTexto,
                         Estado = uv.Estado
-                    }).ToList()
+                    }).ToList(),
             }).ToList();
 
             return View("MisVacantes", vacantesVM);
+
         }
 
 
@@ -139,15 +144,50 @@ namespace EsteroidesToDo.Controllers
             return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CambiarEstadoVacante(int vacanteId, string nuevoEstado)
+        [HttpGet]
+        [Authorize]
+        public IActionResult Postular(int VacanteId)
         {
-            var result = await _postulacionesVacantesService.CambiarEstadoVacante(vacanteId, nuevoEstado);
-            if (result.IsSuccess)
+            var UsuarioId = GetUserId();
+            var model = new PostuladoViewModel
             {
-                return BadRequest(result.Error);
+                UsuarioId = (int)UsuarioId,
+                VacanteId = VacanteId
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Postular(PostuladoViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
+
+            var dto = new PostulanteDto
+            {
+                UsuarioId = model.UsuarioId,
+                VacanteId = model.VacanteId,
+                PropuestaTexto = model.PropuestaTexto,
+                Estado = "Activo"
+            };
+
+            var result = await _postulacionesVacantesService.CrearPostulacion(dto);
+            if (!result.IsSuccess) { return BadRequest(result.Error); }
             return RedirectToAction(nameof(Vacantes));
         }
+
+        [Authorize]
+        public async Task<IActionResult> BorrarVacante(int VacanteId)
+        {
+            var UsuarioId = GetUserId();
+            var result = await _borrarVacanteService.BorrarVacante(VacanteId, UsuarioId);
+            if (!result.IsSuccess)  return BadRequest(result.Error); 
+
+            return View("MisVacantes");
+        }
+
     }
 }

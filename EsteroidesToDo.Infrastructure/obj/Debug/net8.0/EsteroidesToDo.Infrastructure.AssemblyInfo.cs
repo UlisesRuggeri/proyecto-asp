@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EsteroidesToDo.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71022316d603f6881fe408a029a2e3ca8cf74046")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad34996f48bc76ed3abe70aba28c17c7a1fcfe7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("EsteroidesToDo.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EsteroidesToDo.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

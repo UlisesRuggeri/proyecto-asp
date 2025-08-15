@@ -13,7 +13,7 @@ namespace EseroidesToDo.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<bool> PuedeCrearVacanteAsync(int usuarioId)
+        public async Task<bool> PuedeCrearVacanteAsync(int? usuarioId)
         {
             return await _context.Empresas
                 .AsNoTracking()
@@ -33,53 +33,78 @@ namespace EseroidesToDo.Infrastructure.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-
         public async Task<List<Vacante>> ObtenerPorEmpresaAsync(int usuarioId)
         {
+            var empresaId = await _context.Usuarios
+                .Where(u => u.Id == usuarioId)
+                .Select(u => u.EmpresaId)
+                .FirstOrDefaultAsync();
+
             return await _context.Vacantes
                 .Include(v => v.UsuarioVacantes)
-                .Where(v => v.UsuarioVacantes.Any(uv => uv.UsuarioId == usuarioId))
+                .Where(v => v.UsuarioVacantes.Any(uv => uv.UsuarioId == usuarioId) || v.EmpresaId == empresaId)
                 .AsNoTracking()
                 .ToListAsync();
+        }
 
-        }
-        public async Task ActualizarEstadoAsync(int vacanteId, string nuevoEstado)
-        {
-            var vacante = await _context.Vacantes.FirstOrDefaultAsync(v => v.Id == vacanteId);
-            if (vacante == null) return;
-            vacante.Estado = nuevoEstado;
-            await _context.SaveChangesAsync();
-        }
 
         public async Task MarcarPostuladoComoAceptadoAsync(int vacanteId, int usuarioId)
         {
-
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
             var vacante = await _context.Vacantes
                 .Include(v => v.UsuarioVacantes)
                 .FirstOrDefaultAsync(v => v.Id == vacanteId);
 
-            var postulado = vacante.UsuarioVacantes.FirstOrDefault(p => p.UsuarioId == usuarioId);
+            var postulado = vacante.UsuarioVacantes
+                .FirstOrDefault(p => p.UsuarioId == usuarioId);
 
-            postulado.Estado = "Aceptado";
-           
+            _context.UsuarioVacantes.Remove(postulado);
+
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
             usuario.EmpresaId = vacante.EmpresaId;
+
             await _context.SaveChangesAsync();
         }
 
+
         public async Task MarcarPostuladoComoRechazadoAsync(int vacanteId, int usuarioId)
         {
-
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
             var vacante = await _context.Vacantes
                 .Include(v => v.UsuarioVacantes)
                 .FirstOrDefaultAsync(v => v.Id == vacanteId);
 
-            var postulado = vacante.UsuarioVacantes.FirstOrDefault(p => p.UsuarioId == usuarioId);
+            var postulado = vacante.UsuarioVacantes
+                .FirstOrDefault(p => p.UsuarioId == usuarioId);
 
             postulado.Estado = "Rechazado";
 
             await _context.SaveChangesAsync();
+        }
+
+
+        public async Task CrearPostulacion(Postulante usuarioVacante)
+        {
+            _context.UsuarioVacantes.Add(usuarioVacante);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task BorrarVacante(int vacanteId)
+        {
+            var postulados = _context.UsuarioVacantes
+                .Where(uv => uv.VacanteId == vacanteId);
+
+            _context.UsuarioVacantes.RemoveRange(postulados);
+
+            var entity = new Vacante { Id = vacanteId };
+            _context.Vacantes.Attach(entity);
+            _context.Vacantes.Remove(entity);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> UsuarioPuedePostular(int vacanteId, int? usuarioId)
+        {
+            return await _context.UsuarioVacantes
+                .AnyAsync(p => p.UsuarioId == usuarioId && p.VacanteId == vacanteId);
         }
 
     }

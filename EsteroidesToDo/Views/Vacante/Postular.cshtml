@@ -1,0 +1,20 @@
+﻿
+@model EsteroidesToDo.Application.ViewModels.PostuladoViewModel
+
+@{
+    ViewData["Title"] = "Postularse";
+}
+
+<h2>Postularse</h2>
+
+<form asp-action="Postular" method="post">
+    <input type="hidden" name="VacanteId" value="@Model.VacanteId" />
+    <input type="hidden" name="UsuarioId" value="@Model.UsuarioId" />
+
+    <div> 
+        <label for="PropuestaTexto">Tu propuesta: </label> 
+        <input asp-for="PropuestaTexto" type="text" /> 
+        <span asp-validation-for="PropuestaTexto" class="text-danger"></span> 
+    </div>
+    <button type="submit" class="btn btn-success mb-2">Postular</button>
+</form>

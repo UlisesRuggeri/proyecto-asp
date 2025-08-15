@@ -6,10 +6,7 @@ namespace EsteroidesToDo.Models
 {
     public class UsuarioProyectoRol
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        //los siguientes 2 de abajo son la llave compuesta
         [Required]
         public int UsuarioId { get; set; }
 

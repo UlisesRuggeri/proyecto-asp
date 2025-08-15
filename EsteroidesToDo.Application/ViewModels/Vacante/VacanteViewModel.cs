@@ -1,4 +1,6 @@
 ﻿
+using EsteroidesToDo.Application.Common;
+
 namespace EsteroidesToDo.Application.ViewModels
 {
     public class VacanteViewModel
