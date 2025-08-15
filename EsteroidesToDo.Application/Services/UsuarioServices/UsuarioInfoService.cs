@@ -20,16 +20,16 @@ namespace EsteroidesToDo.Application.Services.UserServices
         {
             var usuario = await _usuarioRepository.ObtenerPorEmailAsync(email);
             if (usuario == null)
-                return OperationResult<UsuarioInfoViewModel>.Failure("Usuario no encontrado");
+                return OperationResult<UsuarioInfoViewModel>.Failure("Email o usuario no encontrado");
 
-            var empresa = await _empresaRepository.ObtenerPorIdDuenioAsync(usuario.Id);
-
+            var empresa = await _empresaRepository.ObtenerEmpresaPorIdUsuario(usuario.Id);
+            
+            Console.WriteLine(empresa.Nombre, "xd2");
             var UsuarioInfoVM = new UsuarioInfoViewModel
             {
                 Nombre = usuario.Nombre,
                 Email = usuario.Email,
                 FechaCreacion = usuario.FechaCreacion,
-                PerteneceAEmpresa = empresa != null,
                 NombreEmpresa = empresa?.Nombre
             };
 

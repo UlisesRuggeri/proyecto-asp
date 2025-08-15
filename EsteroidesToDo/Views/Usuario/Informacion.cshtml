@@ -6,7 +6,7 @@
 <p>Email: @Model.Email</p>
 <p>Fecha de creación: @Model.FechaCreacion</p>
 
-@if (Model.PerteneceAEmpresa)
+@if (Model.NombreEmpresa != null)
 {
     <p>Pertenece a la empresa: @Model.NombreEmpresa</p>
 }

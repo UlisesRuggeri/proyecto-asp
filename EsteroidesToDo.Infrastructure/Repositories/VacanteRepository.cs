@@ -65,7 +65,8 @@ namespace EseroidesToDo.Infrastructure.Repositories
                 query = query.Where(v =>
                     v.Titulo.Contains(filter.SearchTerm) ||
                     v.Empresa.Nombre.Contains(filter.SearchTerm) ||
-                    v.Estado.Contains(filter.SearchTerm));
+                    v.Estado.Contains(filter.SearchTerm) ||
+                    v.Descripcion.Contains(filter.SearchTerm)) ;
             }
 
             var totalCount = await query.CountAsync();
