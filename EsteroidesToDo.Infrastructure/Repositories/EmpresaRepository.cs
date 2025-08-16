@@ -23,6 +23,12 @@ namespace EsteroidesToDo.Infrastructure.Repositories
                 .FirstOrDefaultAsync(e => e.IdDuenio == idDuenio);
         }
 
+        public async Task<Empresa?> ObtenerEmpresaPorIdUsuario(int userId)
+        {
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == userId);
+            return await _context.Empresas.FirstOrDefaultAsync(e => e.Id == usuario.EmpresaId);
+        }
+
         // ─────────────────────────────────────
         // CREAR
         // ─────────────────────────────────────

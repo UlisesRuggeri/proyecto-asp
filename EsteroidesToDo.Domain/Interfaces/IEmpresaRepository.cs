@@ -6,6 +6,6 @@ namespace EsteroidesToDo.Domain.Interfaces
     {
         Task<Empresa?> ObtenerPorIdDuenioAsync(int idDuenio);
         Task CrearEmpresa(Empresa empresa);
-        Task<string> ObtenerEmpresaPorIdUsuario(int id);
+        Task<Empresa?> ObtenerEmpresaPorIdUsuario(int id);
     }
 }

@@ -24,7 +24,6 @@ namespace EsteroidesToDo.Application.Services.UserServices
 
             var empresa = await _empresaRepository.ObtenerEmpresaPorIdUsuario(usuario.Id);
             
-            Console.WriteLine(empresa.Nombre, "xd2");
             var UsuarioInfoVM = new UsuarioInfoViewModel
             {
                 Nombre = usuario.Nombre,
