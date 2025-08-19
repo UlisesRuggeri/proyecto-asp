@@ -1,4 +1,4 @@
-using EsteroidesToDo.Infrastructure.Data;
+﻿using EsteroidesToDo.Infrastructure.Data;
 //using EsteroidesToDo.Middlewares;
 using EsteroidesToDo.Application;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +31,17 @@ builder.Services.AddInfrastructureServiceRegistration();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
+
+
+
+
 var app = builder.Build();
 
+
+
+
 app.UseSession();
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -62,3 +70,6 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.Run();
+
+
+

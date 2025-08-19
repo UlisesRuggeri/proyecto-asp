@@ -1,4 +1,5 @@
 ﻿using EsteroidesToDo.Application.DTOs.VacanteDtos;
+using EsteroidesToDo.Application.Services.NotificacionesServices;
 using EsteroidesToDo.Application.Services.VacanteServices;
 using EsteroidesToDo.Application.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,16 @@ namespace EsteroidesToDo.Controllers
         private readonly VacanteInfoService _vacanteInfoService;
         private readonly PostulacionesVacantesService _postulacionesVacantesService;
 
+        private readonly NotificacionesService _notificacionesService;
+
         public VacanteController(
             VacanteInfoService vacanteInfo,
             CrearVacanteService crearVacanteService,
             PostulacionesVacantesService postulacionesVacantesService,
-            BorrarVacanteService borrarVacanteService)
+            BorrarVacanteService borrarVacanteService,
+            NotificacionesService notificacionesService)
         {
+            _notificacionesService = notificacionesService;
             _borrarVacanteService = borrarVacanteService;
             _vacanteInfoService = vacanteInfo;
             _crearVacanteService = crearVacanteService;
@@ -139,20 +144,23 @@ namespace EsteroidesToDo.Controllers
         public async Task<IActionResult> AceptarPostulado(int vacanteId, int usuarioId)
         {
             var result = await _postulacionesVacantesService.AceptarPostulado(vacanteId, usuarioId);
-            if (result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
-            return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
+
+            await _notificacionesService.EncapsularYGuardarNotificacionAsync(usuarioId, "Felicidades, fuiste aceptado en una vacante revisa tu perfil para ver a que empresa perteneces");
+            return RedirectToAction(nameof(ListaPostulados));
         }
 
         public async Task<IActionResult> RechazarPostulado(int vacanteId, int usuarioId)
         {
             var result = await _postulacionesVacantesService.RechazarPostulado(vacanteId, usuarioId);
-            if (result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
+
             return RedirectToAction(nameof(ListaPostulados), new { vacanteId });
         }
 

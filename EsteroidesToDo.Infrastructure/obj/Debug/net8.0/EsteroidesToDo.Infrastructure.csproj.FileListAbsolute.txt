@@ -2,7 +2,9 @@ D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.runtimeconfig.json
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.dll
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Infrastructure.pdb
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.dll
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Domain.dll
+D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.pdb
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Domain.pdb
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.csproj.AssemblyReference.cache
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
@@ -16,5 +18,3 @@ D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\refint\Esteroid
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.pdb
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\EsteroidesToDo.Infrastructure.genruntimeconfig.cache
 D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\obj\Debug\net8.0\ref\EsteroidesToDo.Infrastructure.dll
-D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.dll
-D:\EsteroidesToDo\EsteroidesToDo.Infrastructure\bin\Debug\net8.0\EsteroidesToDo.Application.pdb

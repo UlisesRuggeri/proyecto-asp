@@ -1,6 +1,7 @@
 ﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using EsteroidesToDo.Application.Interfaces.Cache;
 using EsteroidesToDo.Application.Services.AutenticacionServices;
+using EsteroidesToDo.Application.Services.NotificacionesServices;
 using EsteroidesToDo.Application.Services.UserServices;
 using EsteroidesToDo.Application.ViewModels.UsuarioViewModel;
 using Microsoft.AspNetCore.Authentication;
@@ -21,14 +22,17 @@ namespace EsteroidesToDo.Controllers
         private readonly LoginService _loginService;
         private readonly RegisterService _registerService;
         private readonly UsuarioInfoService _usuarioInfoService;
+        private readonly NotificacionesService _notificacionesService;
 
         public UsuarioController(
             LoginService loginService,
             RegisterService registerService,
             UsuarioInfoService usuarioInfoService,
             AuthService authService,
+            NotificacionesService notificacionesService,
             IClearCacheService clearCacheService)
         {
+            _notificacionesService = notificacionesService;
             _clearCacheService = clearCacheService;
             _authService = authService;
             _loginService = loginService;
@@ -40,11 +44,23 @@ namespace EsteroidesToDo.Controllers
         // Helper Methods
         // ---------------------------
         private string? GetUserEmail() => User.FindFirstValue(ClaimTypes.Email);
+        private int? GetUserId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        
         // ---------------------------
         // User Info
         // ---------------------------
+
+        //ObtenerUsuarioNotificacionesAsync(int usuarioId)
+        //EnviarNotificacionAsync(int usuarioId, string contenido)
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Notificaciones()
+        {
+            int? userId = GetUserId();
+            var notificaciones = await _notificacionesService.ObtenerPorUsuarioAsync(userId);
+            return View("~/Views/Notificaciones/Notificaciones.cshtml", notificaciones);
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Informacion(string? returnUrl = null)

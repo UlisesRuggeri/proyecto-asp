@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EsteroidesToDo.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class fix5 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,8 +28,6 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 name: "ConversacionesTarea",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     TareaId = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -37,7 +35,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConversacionesTarea", x => x.Id);
+                    table.PrimaryKey("PK_ConversacionesTarea", x => new { x.TareaId, x.UsuarioId });
                 });
 
             migrationBuilder.CreateTable(
@@ -129,7 +127,6 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdEmpresa = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
                     Contenido = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -137,12 +134,6 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notificaciones", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Notificaciones_Empresas_IdEmpresa",
-                        column: x => x.IdEmpresa,
-                        principalTable: "Empresas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Notificaciones_Usuarios_IdUsuario",
                         column: x => x.IdUsuario,
@@ -202,15 +193,13 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 name: "UsuarioProyectoRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     ProyectoId = table.Column<int>(type: "int", nullable: false),
                     Rol = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsuarioProyectoRoles", x => x.Id);
+                    table.PrimaryKey("PK_UsuarioProyectoRoles", x => new { x.UsuarioId, x.ProyectoId });
                     table.ForeignKey(
                         name: "FK_UsuarioProyectoRoles_Proyectos_ProyectoId",
                         column: x => x.ProyectoId,
@@ -226,7 +215,7 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UsuarioVacantes",
+                name: "Postulantes",
                 columns: table => new
                 {
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
@@ -238,28 +227,23 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsuarioVacantes", x => new { x.UsuarioId, x.VacanteId });
+                    table.PrimaryKey("PK_Postulantes", x => new { x.UsuarioId, x.VacanteId });
                     table.ForeignKey(
-                        name: "FK_UsuarioVacantes_Usuarios_UsuarioId",
+                        name: "FK_Postulantes_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UsuarioVacantes_Vacantes_VacanteId",
+                        name: "FK_Postulantes_Vacantes_VacanteId",
                         column: x => x.VacanteId,
                         principalTable: "Vacantes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UsuarioVacantes_Vacantes_VacanteId1",
+                        name: "FK_Postulantes_Vacantes_VacanteId1",
                         column: x => x.VacanteId1,
                         principalTable: "Vacantes",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ConversacionesTarea_TareaId",
-                table: "ConversacionesTarea",
-                column: "TareaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ConversacionesTarea_UsuarioId",
@@ -272,14 +256,19 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 column: "IdDuenio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notificaciones_IdEmpresa",
-                table: "Notificaciones",
-                column: "IdEmpresa");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Notificaciones_IdUsuario",
                 table: "Notificaciones",
                 column: "IdUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Postulantes_VacanteId",
+                table: "Postulantes",
+                column: "VacanteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Postulantes_VacanteId1",
+                table: "Postulantes",
+                column: "VacanteId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Proyectos_EmpresaId",
@@ -317,24 +306,9 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 column: "ProyectoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UsuarioProyectoRoles_UsuarioId",
-                table: "UsuarioProyectoRoles",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_EmpresaId",
                 table: "Usuarios",
                 column: "EmpresaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsuarioVacantes_VacanteId",
-                table: "UsuarioVacantes",
-                column: "VacanteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UsuarioVacantes_VacanteId1",
-                table: "UsuarioVacantes",
-                column: "VacanteId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vacantes_EmpresaId",
@@ -379,10 +353,10 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                 name: "Notificaciones");
 
             migrationBuilder.DropTable(
-                name: "UsuarioProyectoRoles");
+                name: "Postulantes");
 
             migrationBuilder.DropTable(
-                name: "UsuarioVacantes");
+                name: "UsuarioProyectoRoles");
 
             migrationBuilder.DropTable(
                 name: "Tareas");

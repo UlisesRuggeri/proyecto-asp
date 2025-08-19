@@ -40,7 +40,7 @@ namespace EsteroidesToDo.Infrastructure.Data
                 .HasKey(uv => new { uv.UsuarioId, uv.VacanteId });
 
             modelBuilder.Entity<Notificacion>()
-                .HasKey(n => new { n.IdEmpresa, n.IdUsuario });
+                .HasKey(n => n.Id);
 
             modelBuilder.Entity<ConversacionesTarea>()
                 .HasKey(ct => new { ct.TareaId, ct.UsuarioId });

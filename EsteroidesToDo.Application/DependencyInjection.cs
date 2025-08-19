@@ -1,5 +1,7 @@
-﻿using EsteroidesToDo.Application.Services.AutenticacionServices;
+﻿using EsteroidesToDo.Application.Notifications;
+using EsteroidesToDo.Application.Services.AutenticacionServices;
 using EsteroidesToDo.Application.Services.EmpresaServices;
+using EsteroidesToDo.Application.Services.NotificacionesServices;
 using EsteroidesToDo.Application.Services.UserServices;
 using EsteroidesToDo.Application.Services.VacanteServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +28,9 @@ namespace EsteroidesToDo.Application
             services.AddScoped<PostulacionesVacantesService>();
             services.AddScoped<BorrarVacanteService>();
 
-      
+            //Observator Pattern
+            services.AddScoped<NotificacionesService>();
+            services.AddScoped<NotificacionPublisher>();
 
             return services;
         }

@@ -253,11 +253,11 @@ namespace EsteroidesToDo.Infrastructure.Migrations
 
             modelBuilder.Entity("Notificacion", b =>
                 {
-                    b.Property<int>("IdEmpresa")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Contenido")
                         .IsRequired()
@@ -267,7 +267,10 @@ namespace EsteroidesToDo.Infrastructure.Migrations
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IdEmpresa", "IdUsuario");
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("IdUsuario");
 
@@ -446,19 +449,11 @@ namespace EsteroidesToDo.Infrastructure.Migrations
 
             modelBuilder.Entity("Notificacion", b =>
                 {
-                    b.HasOne("EsteroidesToDo.Models.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Empresa");
 
                     b.Navigation("Usuario");
                 });

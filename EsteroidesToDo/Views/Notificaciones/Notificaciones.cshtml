@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Notificacion>
+
+
+@{
+    ViewData["Title"] = "Mis Notificaciones";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!Model.Any())
+{
+    <p>No tenés notificaciones pendientes 🎉</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var notificacion in Model)
+        {
+            <li>
+                <strong>@notificacion.Contenido</strong>
+                <small>(@notificacion.FechaCreacion.ToLocalTime())</small>
+            </li>
+        }
+    </ul>
+}
