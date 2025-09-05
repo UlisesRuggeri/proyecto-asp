@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using EsteroidesToDo.Infrastructure.DependencyInjection;
 
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<EsteroidesToDoDbContext>(options =>
 
 builder.Services.AddCacheDecorators();
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServiceRegistration();
+builder.Services.AddInfrastructureServiceRegistration(builder.Configuration);
 
 
 builder.Services.AddHttpContextAccessor();

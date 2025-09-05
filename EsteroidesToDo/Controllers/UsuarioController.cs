@@ -1,5 +1,6 @@
 ﻿using EsteroidesToDo.Application.DTOs.UsuarioDtos;
 using EsteroidesToDo.Application.Interfaces.Cache;
+using EsteroidesToDo.Application.Interfaces.Usuario;
 using EsteroidesToDo.Application.Services.AutenticacionServices;
 using EsteroidesToDo.Application.Services.NotificacionesServices;
 using EsteroidesToDo.Application.Services.UserServices;
@@ -23,6 +24,7 @@ namespace EsteroidesToDo.Controllers
         private readonly RegisterService _registerService;
         private readonly UsuarioInfoService _usuarioInfoService;
         private readonly NotificacionesService _notificacionesService;
+        private readonly IEmailRateLimiter _emailLimiter;
 
         public UsuarioController(
             LoginService loginService,
@@ -30,8 +32,10 @@ namespace EsteroidesToDo.Controllers
             UsuarioInfoService usuarioInfoService,
             AuthService authService,
             NotificacionesService notificacionesService,
-            IClearCacheService clearCacheService)
+            IClearCacheService clearCacheService,
+            IEmailRateLimiter emailLimiter)
         {
+            _emailLimiter = emailLimiter;
             _notificacionesService = notificacionesService;
             _clearCacheService = clearCacheService;
             _authService = authService;
@@ -124,6 +128,9 @@ namespace EsteroidesToDo.Controllers
                 Console.WriteLine(errores);
                 return BadRequest(ModelState);
             }
+
+            if (!await _emailLimiter.IsAllowedAsync(model.Email))
+                return StatusCode(429, "Too many attempts with this email.");
 
             // Service returns OperationResult<bool>
             var result = await _registerService.RegistrarUsuario(new RegisterDto
