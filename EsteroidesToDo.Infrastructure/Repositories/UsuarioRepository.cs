@@ -41,7 +41,7 @@ namespace EsteroidesToDo.Infrastructure.Repositories
         }
 
         // ─────────────────────────────────────
-        // CREAR / ACTUALIZAR
+        // CREAR 
         // ─────────────────────────────────────
         public async Task Agregar(Usuario nuevoUsuario)
         {

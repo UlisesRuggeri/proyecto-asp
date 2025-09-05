@@ -15,7 +15,7 @@ namespace EsteroidesToDo.Application.Common
         }
 
         public static OperationResult<T> Success(T value) => new OperationResult<T>(value,true, null);
-        public static OperationResult<T> Failure(string error) => new OperationResult<T>(default,false, error);
+        public static OperationResult<T> Failure(string error) => new OperationResult<T>(default, false, error);
     }
 
 }

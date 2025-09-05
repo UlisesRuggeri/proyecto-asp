@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2GuuX0bSK4c=",
+  "dgSpecHash": "zPFVJyv1dUA=",
   "success": true,
   "projectFilePath": "D:\\EsteroidesToDo\\EsteroidesToDo.Infrastructure\\EsteroidesToDo.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -50,6 +50,8 @@
     "C:\\Users\\rugge\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\rugge\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\rugge\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
+    "C:\\Users\\rugge\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "C:\\Users\\rugge\\.nuget\\packages\\stackexchange.redis\\2.9.11\\stackexchange.redis.2.9.11.nupkg.sha512",
     "C:\\Users\\rugge\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",
     "C:\\Users\\rugge\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\rugge\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
