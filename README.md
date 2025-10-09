@@ -15,10 +15,7 @@
 * **Diseñado para soportar** (arquitectura / esquema)
 
   * Multiempresa (cada empresa separa sus datos y procesos).
-  * Control de Roles (Dueño, Líder, Usuario) — modelo de datos y espacio para integrarlo.
   * Gestión de Proyectos y Tareas — entidades y relaciones definidas en el esquema; interfaz y lógica por implementar.
-  * Versionado temporal (System-Versioned Tables) en SQL Server para auditoría y recuperación de registros.
-
 ---
 
 ## Tech stack
