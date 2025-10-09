@@ -75,7 +75,7 @@ dotnet run --project EsteroidesToDo.Api
 }
 ```
 
-Video demo:
+Video demo
 [![Demo](https://img.youtube.com/vi/rgyWH1IVY1A/0.jpg)](https://www.youtube.com/watch?v=rgyWH1IVY1A)
 
 
